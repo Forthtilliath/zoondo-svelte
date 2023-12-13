@@ -3,7 +3,6 @@
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 
 	export let board: Game.Board;
-	console.log(board);
 </script>
 
 <div class="wrapper">
@@ -38,13 +37,5 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
-		&.hovered {
-			background-color: yellowgreen;
-		}
-
-		&.authorizedMove {
-			background-color: yellow;
-		}
 	}
 </style>

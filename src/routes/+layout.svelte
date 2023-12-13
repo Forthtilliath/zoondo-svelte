@@ -3,13 +3,11 @@
 	import '../styles/core/base.scss';
 
 	import Hotlinks from './Hotlinks.svelte';
-	import Search from './Search.svelte';
 </script>
 
 <div class="wrapper">
 	<header>
 		<Hotlinks />
-		<Search />
 	</header>
 	<slot />
 </div>

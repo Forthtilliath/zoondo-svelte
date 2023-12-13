@@ -29,6 +29,8 @@ declare global {
 		type CardInstance = Card & {
 			owner: number;
 		};
+
+		type Transition = [Position, Position];
 	}
 }
 export {};
