@@ -1,10 +1,21 @@
 <script lang="ts">
+	import CardTokenOpponent from './CardTokenOpponent.svelte';
+	import CardTokenPlayer from './CardTokenPlayer.svelte';
+
 	export let board: Game.Board;
+	console.log(board);
 </script>
 
 <div class="wrapper">
 	{#each board as square}
-		<div class="square">?</div>
+		<div class="square">
+			{#if square.card === false}
+				<CardTokenOpponent />
+			{/if}
+			{#if typeof square.card === 'object'}
+				<CardTokenPlayer card={square.card} />
+			{/if}
+		</div>
 	{/each}
 </div>
 

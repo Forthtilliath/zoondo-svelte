@@ -1,27 +1,24 @@
 <script lang="ts">
-	let card = {
-		slug: 'cloboulon',
-		name: 'Cloboulon',
-		type: 'chief',
-		corners: [4, 5, '*', 2],
-		power:
-			'Le combat se solde par une égalité. Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.',
-		value: 20,
-		moves: [[[-1, 0]], [[-1, 1]], [[0, 1]], [[1, 1]], [[1, 0]], [[1, -1]], [[0, -1]], [[-1, -1]]]
-	};
+	import { currentFocus } from '$lib/stores/game';
 </script>
 
 <div class="card">
-	<div class="corner cor-tl">{card.corners[0]}</div>
-	<div class="corner cor-tr">{card.corners[1]}</div>
-	<div class="corner cor-br">{card.corners[2]}</div>
-	<div class="corner cor-bl">{card.corners[3]}</div>
-	<div class="moves">Moves: TODO</div>
-	<img src={`/assets/types/${card.type}.png`} alt={card.type} class="type" />
-	<div class="value">{card.value}</div>
-	<img src={`/assets/tribes/${card.slug}.png`} alt={card.slug} class="picture" />
-	<div class="name">{card.name}</div>
-	<div class="power">{card.power && `Special: ${card.power}`}</div>
+	{#if $currentFocus}
+		<div class="corner cor-tl">{$currentFocus.corners[0]}</div>
+		<div class="corner cor-tr">{$currentFocus.corners[1]}</div>
+		<div class="corner cor-br">{$currentFocus.corners[2]}</div>
+		<div class="corner cor-bl">{$currentFocus.corners[3]}</div>
+		<div class="moves">Moves: TODO</div>
+		<img src={`/assets/types/${$currentFocus.type}.png`} alt={$currentFocus.type} class="type" />
+		<div class="value">{$currentFocus.value}</div>
+		<img
+			src={`/assets/tribes/${$currentFocus.slug}.png`}
+			alt={$currentFocus.slug}
+			class="picture"
+		/>
+		<div class="name">{$currentFocus.name}</div>
+		<div class="power">{$currentFocus.power ? `Special: ${$currentFocus.power}` : ''}</div>
+	{/if}
 </div>
 
 <style lang="scss">

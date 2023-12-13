@@ -21,10 +21,14 @@ declare global {
 		};
 
 		type Square = Position & {
-			card?: Card;
+			card?: Card | false;
 		};
 
 		type Board = Array<Square>;
+
+		type CardInstance = Card & {
+			owner: number;
+		};
 	}
 }
 export {};
