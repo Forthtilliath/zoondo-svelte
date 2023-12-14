@@ -8,10 +8,9 @@
 <div class="wrapper">
 	{#each board as square}
 		<div class="square">
-			{#if square.card === false}
+			{#if square.card === null}
 				<CardTokenOpponent />
-			{/if}
-			{#if typeof square.card === 'object'}
+			{:else if square.card}
 				<CardTokenPlayer card={square.card} />
 			{/if}
 		</div>
