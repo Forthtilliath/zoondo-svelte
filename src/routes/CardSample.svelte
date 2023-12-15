@@ -19,19 +19,20 @@
 					? ''
 					: 'move'}
 				<div class={`square ${origin} ${move}`} />
-				<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-					{#each movesToTransitions($currentFocus.moves, squares.length) as [src, dst]}
-						<line
-							x1={src.x + 50}
-							y1={src.y + 50}
-							x2={dst.x + 50}
-							y2={dst.y + 50}
-							stroke="black"
-							stroke-width="2"
-						/>
-					{/each}
-				</svg>
 			{/each}
+			<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				{#each movesToTransitions($currentFocus.moves, squares.length) as [src, dst]}
+				{@const delta = src.x === 0 && dst.x === 0 ? 49.75 : 50}
+					<line
+						x1={src.x + 50}
+						y1={src.y + 50}
+						x2={dst.x + 50}
+						y2={dst.y + 50}
+						stroke="black"
+						stroke-width="2"
+					/>
+				{/each}
+			</svg>
 		</div>
 		<img src={`/assets/types/${$currentFocus.type}.webp`} alt={$currentFocus.type} class="type" />
 		<div class="value">{$currentFocus.value}</div>
@@ -119,29 +120,33 @@
 
 	.moves {
 		grid-area: moves;
-		display: flex;
-		flex-flow: row wrap;
-		gap: 1px;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(5, 1fr); 
+		gap: 4px;
 		aspect-ratio: 1;
 		align-self: center;
 		position: relative;
 		width: 10rem; //TODO valeur magique -_-
 
 		.square {
-			width: calc(20% - 1px);
-			aspect-ratio: 1;
-			border: 1px solid lightgray;
+			width: 100%;
+			height: 100%;
+			outline: 1px solid lightgray;
 			box-sizing: border-box;
 			position: relative;
 
 			&::after {
-				content: '●';
-				width: 100%;
-				aspect-ratio: 1;
+				content: '';
+				background: black;
+				width: 6px;
+				height: 6px;
+				display: block;
+				top: 50%;
+				left: 50%;
 				position: absolute;
-				color: black;
-				display: grid;
-				place-items: center;
+				transform: translate(-50%, -50%);
+				border-radius: 50%;
 			}
 
 			&.origin {
