@@ -33,10 +33,10 @@
 				</svg>
 			{/each}
 		</div>
-		<img src={`/assets/types/${$currentFocus.type}.png`} alt={$currentFocus.type} class="type" />
+		<img src={`/assets/types/${$currentFocus.type}.webp`} alt={$currentFocus.type} class="type" />
 		<div class="value">{$currentFocus.value}</div>
 		<img
-			src={`/assets/tribes/${$currentFocus.slug}.png`}
+			src={`/assets/tribes/${$currentFocus.slug}.webp`}
 			alt={$currentFocus.slug}
 			class="picture"
 		/>

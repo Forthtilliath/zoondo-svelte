@@ -25,7 +25,7 @@
 		flex-flow: row wrap;
 		width: 100%;
 		height: 100%;
-		background-image: url('/assets/board.jpg');
+		background-image: url('/assets/board.webp');
 		background-size: cover;
 	}
 	.square {
