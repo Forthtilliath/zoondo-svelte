@@ -4,8 +4,8 @@
 	let squares = generatePositions(-2, 2);
 </script>
 
-<div class="card">
-	{#if $currentFocus}
+{#if $currentFocus}
+	<div class="card">
 		<div class="corner cor-tl">{$currentFocus.corners[0]}</div>
 		<div class="corner cor-tr">{$currentFocus.corners[1]}</div>
 		<div class="corner cor-br">{$currentFocus.corners[2]}</div>
@@ -44,8 +44,8 @@
 		{#if $currentFocus.power}
 			<div class="power">Special: {$currentFocus.power}</div>
 		{/if}
-	{/if}
-</div>
+	</div>
+{/if}
 
 <style lang="scss">
 	.card {
@@ -61,7 +61,7 @@
 			'cor-bl power power cor-br';
 
 		& > * {
-			border: 1px dashed violet;
+			outline: 1px dashed violet;
 		}
 
 		background-color: black;
