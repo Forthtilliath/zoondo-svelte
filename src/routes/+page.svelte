@@ -17,7 +17,7 @@
 		<CardSample />
 	</div>
 	<div class="Chat">
-		<Chat />
+		<Chat chat={data.chat} />
 	</div>
 </main>
 
