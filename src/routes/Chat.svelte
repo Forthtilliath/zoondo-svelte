@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let chat: Chat.Message[];
+	export let messages: Chat.Message[];
 	const userId = 1;
 
 	function formatTime(time: number) {
@@ -13,7 +13,7 @@
 
 <div class="wrapper">
 	<ul>
-		{#each chat as message}
+		{#each messages as message}
 			<li class={userId === message.userId ? 'message me' : 'message him'}>
 				<p>{message.content}</p>
 				<span class="time">{formatTime(message.time)}</span>
