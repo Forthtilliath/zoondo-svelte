@@ -41,7 +41,9 @@
 			class="picture"
 		/>
 		<div class="name">{$currentFocus.name}</div>
-		<div class="power">{$currentFocus.power ? `Special: ${$currentFocus.power}` : ''}</div>
+		{#if $currentFocus.power}
+			<div class="power">Special: {$currentFocus.power}</div>
+		{/if}
 	{/if}
 </div>
 
