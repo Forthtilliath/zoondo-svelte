@@ -22,7 +22,6 @@
 			{/each}
 			<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 				{#each movesToTransitions($currentFocus.moves, squares.length) as [src, dst]}
-				{@const delta = src.x === 0 && dst.x === 0 ? 49.75 : 50}
 					<line
 						x1={src.x + 50}
 						y1={src.y + 50}
