@@ -5,6 +5,10 @@
 	export let data;
 </script>
 
+<svelte:head>
+	<title>Zoondo : Board</title>
+</svelte:head>
+
 <main>
 	<div class="Board">
 		<Board board={data.board} />
@@ -27,7 +31,7 @@
 			'Board CardSample'
 			'Board Chat';
 
-		aspect-ratio: 2;
+		height: 90vh;
 
 		& > * {
 			border: 2px dotted yellowgreen;

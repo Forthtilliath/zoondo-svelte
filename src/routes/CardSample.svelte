@@ -12,11 +12,13 @@
 		<div class="corner cor-bl">{$currentFocus.corners[3]}</div>
 		<div class="moves">
 			{#each squares as square}
-				<div
-					class="square {square.x === 0 && square.y === 0 && 'origin'} {$currentFocus.moves
-						.flat()
-						.some(([x, y]) => x === square.x && y === square.y && (x !== 0 || y !== 0)) && 'move'}"
-				></div>
+				{@const origin = square.x === 0 && square.y === 0 ? 'origin' : ''}
+				{@const move = $currentFocus.moves
+					.flat()
+					.every(([x, y]) => x !== square.x || y !== square.y)
+					? ''
+					: 'move'}
+				<div class={`square ${origin} ${move}`} />
 				<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 					{#each movesToTransitions($currentFocus.moves, squares.length) as [src, dst]}
 						<line
@@ -31,15 +33,17 @@
 				</svg>
 			{/each}
 		</div>
-		<img src={`/assets/types/${$currentFocus.type}.png`} alt={$currentFocus.type} class="type" />
+		<img src={`/assets/types/${$currentFocus.type}.webp`} alt={$currentFocus.type} class="type" />
 		<div class="value">{$currentFocus.value}</div>
 		<img
-			src={`/assets/tribes/${$currentFocus.slug}.png`}
+			src={`/assets/tribes/${$currentFocus.slug}.webp`}
 			alt={$currentFocus.slug}
 			class="picture"
 		/>
 		<div class="name">{$currentFocus.name}</div>
-		<div class="power">{$currentFocus.power ? `Special: ${$currentFocus.power}` : ''}</div>
+		{#if $currentFocus.power}
+			<div class="power">{`Special: ${$currentFocus.power}`}</div>
+		{/if}
 	{/if}
 </div>
 
