@@ -14,12 +14,12 @@ declare global {
 			power?: string;
 			resolver?: () => void;
 		};
-		type OpponentCard = {
-			card: null;
-			owner: number;
-		};
 		type PlayerCard = {
 			card: Card;
+			owner: number;
+		};
+		type OpponentCard = {
+			card: null;
 			owner: number;
 		};
 		type CardInstance = OpponentCard | PlayerCard;
@@ -29,9 +29,7 @@ declare global {
 			y: number;
 		};
 
-		type Square = Position & {
-			card?: Card | null;
-		};
+		type Square = Position & CardInstance;
 
 		type Board = Array<Square>;
 

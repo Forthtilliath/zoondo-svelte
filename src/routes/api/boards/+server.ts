@@ -4,17 +4,17 @@ import { cardsOnBoard } from '$lib/data/mock';
 
 export function GET() {
 	const idPlayer = 1;
-	let board: Array<Game.Square> = generatePositions(0, 5);
+	let board: Array<Game.Position> = generatePositions(0, 5);
 
 	board = board.map((square) => {
-		let foundCard: Game.CardInstance | undefined | null = cardsOnBoard.find(
+		let squareContent: Game.CardInstance | undefined | null = cardsOnBoard.find(
 			(candidate) => candidate.x === square.x && candidate.y === square.y
 		);
-		if (foundCard && foundCard.owner !== idPlayer) {
-			foundCard = null;
+		if (squareContent && squareContent.owner !== idPlayer) {
+			squareContent = { card: null, owner: squareContent.owner };
 		}
 
-		return { ...square, card: foundCard };
+		return { ...square, ...squareContent };
 	});
 
 	return json(board);
