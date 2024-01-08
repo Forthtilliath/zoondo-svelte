@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { addToast } from '$lib/stores/toast';
 	import CardTokenOpponent from './CardTokenOpponent.svelte';
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 
@@ -11,7 +12,7 @@
 		const cardId = evt.dataTransfer.getData('cardId');
 		const coords = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;
 
-		console.log(`Dropped ${cardId} into ${coords}`);
+		addToast({msg: `Dropped ${cardId} into ${coords}`,type:"notice"})
 	}
 </script>
 

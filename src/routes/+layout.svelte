@@ -3,6 +3,7 @@
 	import '../styles/core/base.scss';
 
 	import Hotlinks from './Hotlinks.svelte';
+	import Toasts from './Toasts.svelte';
 </script>
 
 <div class="wrapper">
@@ -10,6 +11,7 @@
 		<Hotlinks />
 	</header>
 	<slot />
+	<Toasts />
 </div>
 
 <style lang="scss">

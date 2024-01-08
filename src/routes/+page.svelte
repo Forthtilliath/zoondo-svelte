@@ -3,6 +3,7 @@
 	import Board from './Board.svelte';
 	import CardSample from './CardSample.svelte';
 	import Chat from './Chat.svelte';
+	import { addToast } from '$lib/stores/toast';
 
 	export let data;
 	let messages: Array<Chat.Message> = [];
@@ -11,10 +12,7 @@
 	const socket = io();
 
 	socket.on('serverNotice', (msg) => {
-		console.log(msg);
-	});
-	socket.on('message', (msg) => {
-		console.log(msg);
+		addToast({ msg, type:"notice" })
 	});
 	socket.on('lastMessages', (msg) => {
 		messages = msg;
