@@ -9,7 +9,7 @@ datasource db {
 
 model users {
   id       Int     @id @default(autoincrement())
-  username     String @unique(map: "sqlite_autoindex_users_1")
+  name String @unique(map: "sqlite_autoindex_users_1")
   email    String @unique(map: "sqlite_autoindex_users_2")
   password String
   bio String?

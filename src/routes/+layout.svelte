@@ -2,8 +2,8 @@
 	import '$styles/core/reset.scss';
 	import '$styles/core/base.scss';
 
-	import Hotlinks from './(components)/layout/Hotlinks.svelte';
-	import Toasts from './(components)/layout/Toasts.svelte';
+	import Hotlinks from './(components)/Hotlinks.svelte';
+	import Toasts from './(components)/Toasts.svelte';
 </script>
 
 <div class="wrapper">

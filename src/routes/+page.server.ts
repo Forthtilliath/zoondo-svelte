@@ -1,8 +1,12 @@
-export async function load({ fetch }) {
-	const response = await fetch('/api/boards');
-	const board: Game.Board = await response.json();
+import { redirect } from '@sveltejs/kit';
 
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (!session) throw redirect(302, '/signin');
 	return {
-		board
+		userId: session.user.userId,
+		username: session.user.username
 	};
-}
+};
