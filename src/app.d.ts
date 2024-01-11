@@ -3,12 +3,12 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			auth: import('lucia').AuthRequest<import('$lib/server/lucia').Auth>;
+			user: User;
+		}
 		// interface PageData {}
 		// interface Platform {}
-		interface Locals {
-			auth: import('lucia').AuthRequest;
-		}
 	}
 }
 
