@@ -1,16 +1,20 @@
 import { auth } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type ActionFailure } from '@sveltejs/kit';
 
 import type { PageServerLoad, Actions } from './$types';
 import { userSignupSchema } from '$lib/schemas';
-import { LuciaError } from 'lucia';
+import { Prisma } from '@prisma/client';
+import type { z } from 'zod';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/');
 };
 
+type DefaultActionOutput = Promise<
+	ActionFailure<{ message: z.inferFormattedError<typeof userSignupSchema> }>
+>;
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals }): DefaultActionOutput => {
 		const formData = await request.formData();
 
 		const parsedData = userSignupSchema.safeParse(Object.fromEntries(formData));
@@ -30,29 +34,40 @@ export const actions: Actions = {
 				},
 				attributes: {
 					username,
-					email,
+					email
 				}
 			});
-			
+
 			const session = await auth.createSession({
 				userId: user.userId,
 				attributes: {}
 			});
 			locals.auth.setSession(session);
 		} catch (e) {
-			if (e instanceof LuciaError && e.message === 'AUTH_INVALID_KEY_ID') {
-				return fail(400, {
-					message: 'Username already taken'
-				});
+			if (e instanceof Prisma.PrismaClientKnownRequestError) {
+				if (/email/i.test(e.message)) {
+					return fail(400, {
+						message: { email: { _errors: ['Email already taken'] }, _errors: [] }
+					});
+				}
+				if (/username/i.test(e.message)) {
+					return fail(400, {
+						message: { username: { _errors: ['Username already taken'] }, _errors: [] }
+					});
+				}
+				// return fail(400, {
+				// 	message: 'Username or email already taken'
+				//// 	message: { _errors: ['Username or email already taken'] }
+				// });
 			}
 			if (e instanceof Error) {
-				console.error(e.message)
+				console.error(e.message);
 			}
 			return fail(500, {
-				message: 'An unknown error occurred'
+				message: { _errors: ['An unknown error occurred'] }
 			});
 		}
-		
+
 		throw redirect(302, '/');
 	}
 };

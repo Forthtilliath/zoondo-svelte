@@ -1,16 +1,20 @@
 import { auth } from '$lib/server/lucia';
 import { LuciaError } from 'lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type ActionFailure } from '@sveltejs/kit';
 
 import type { PageServerLoad, Actions } from './$types';
 import { userSigninSchema } from '$lib/schemas';
+import type { z } from 'zod';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/');
 };
 
+type DefaultActionOutput = Promise<
+	ActionFailure<{ message: z.inferFormattedError<typeof userSigninSchema> }>
+>;
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals }): DefaultActionOutput => {
 		const formData = await request.formData();
 
 		const parsedData = userSigninSchema.safeParse(Object.fromEntries(formData));
@@ -34,11 +38,11 @@ export const actions: Actions = {
 				(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
 			) {
 				return fail(400, {
-					message: 'Incorrect username or password'
+					message: { _errors: ['Incorrect username or password'] }
 				});
 			}
 			return fail(500, {
-				message: 'An unknown error occurred'
+				message: { _errors: ['An unknown error occurred'] }
 			});
 		}
 
