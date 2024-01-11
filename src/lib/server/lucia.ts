@@ -9,7 +9,6 @@ export const auth = lucia({
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
 	getUserAttributes: (userData) => {
-		console.log('Getting user attributes...');
 		return {
 			username: userData.username,
 			email: userData.email,

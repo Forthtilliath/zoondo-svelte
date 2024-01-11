@@ -13,7 +13,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
-		// basic check
+		
 		if (typeof username !== 'string' || username.length < 1 || username.length > 31) {
 			return fail(400, {
 				message: 'Invalid username'
@@ -25,21 +25,17 @@ export const actions: Actions = {
 			});
 		}
 		try {
-			// find user by key
-			// and validate password
 			const key = await auth.useKey('username', username.toLowerCase(), password);
 			const session = await auth.createSession({
 				userId: key.userId,
 				attributes: {}
 			});
-			locals.auth.setSession(session); // set session cookie
+			locals.auth.setSession(session);
 		} catch (e) {
 			if (
 				e instanceof LuciaError &&
 				(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
 			) {
-				// user does not exist
-				// or invalid password
 				return fail(400, {
 					message: 'Incorrect username or password'
 				});
@@ -48,8 +44,7 @@ export const actions: Actions = {
 				message: 'An unknown error occurred'
 			});
 		}
-		// redirect to
-		// make sure you don't throw inside a try/catch block!
+		
 		throw redirect(302, '/');
 	}
 };
