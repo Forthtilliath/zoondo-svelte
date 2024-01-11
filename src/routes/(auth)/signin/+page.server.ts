@@ -3,6 +3,7 @@ import { LuciaError } from 'lucia';
 import { fail, redirect } from '@sveltejs/kit';
 
 import type { PageServerLoad, Actions } from './$types';
+import { userSigninSchema } from '$lib/schemas';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/');
@@ -11,19 +12,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
-		const username = formData.get('username');
-		const password = formData.get('password');
-		
-		if (typeof username !== 'string' || username.length < 1 || username.length > 31) {
+
+		const parsedData = userSigninSchema.safeParse(Object.fromEntries(formData));
+		if (!parsedData.success) {
 			return fail(400, {
-				message: 'Invalid username'
+				message: parsedData.error.format()
 			});
 		}
-		if (typeof password !== 'string' || password.length < 1 || password.length > 255) {
-			return fail(400, {
-				message: 'Invalid password'
-			});
-		}
+		const { username, password } = parsedData.data;
+
 		try {
 			const key = await auth.useKey('username', username.toLowerCase(), password);
 			const session = await auth.createSession({
@@ -44,7 +41,7 @@ export const actions: Actions = {
 				message: 'An unknown error occurred'
 			});
 		}
-		
+
 		throw redirect(302, '/');
 	}
 };
