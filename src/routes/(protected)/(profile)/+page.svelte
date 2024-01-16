@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { enhance } from "$app/forms";
-	import type { PageData } from "./$types";
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
 	export let data: PageData;
 
-	$: user = data.user;
+	$: user = data.user!;
 </script>
+
+<svelte:head>
+	<title>Zoondo : Profil de {user.username}</title>
+</svelte:head>
 
 <h1>Profile</h1>
 <p>User id: {user.userId}</p>

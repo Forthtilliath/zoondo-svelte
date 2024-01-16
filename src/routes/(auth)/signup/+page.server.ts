@@ -1,18 +1,20 @@
 import { auth } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type ActionFailure } from '@sveltejs/kit';
 
 import type { PageServerLoad, Actions } from './$types';
 import { Prisma } from '@prisma/client';
 import { userSignupSchema } from '$lib/schemas';
+import type { z } from 'zod';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
-	return {};
+	if (locals.user) throw redirect(302, '/');
 };
 
+type DefaultActionOutput = Promise<
+	ActionFailure<{ message: z.inferFormattedError<typeof userSignupSchema> }>
+>;
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals }): DefaultActionOutput => {
 		const formData = await request.formData();
 		const parsedData = userSignupSchema.safeParse(Object.fromEntries(formData));
 
@@ -56,7 +58,7 @@ export const actions: Actions = {
 				}
 			}
 			return fail(500, {
-				message: 'An unknown error occurred'
+				message: { _errors: ['An unknown error occurred'] }
 			});
 		}
 		throw redirect(302, '/');

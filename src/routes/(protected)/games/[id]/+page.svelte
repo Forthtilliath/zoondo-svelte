@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
-	import Chat from '../(components)/Chat.svelte';
+	import Chat from './(components)/Chat.svelte';
 	import { subscribeSocket } from '$lib/methods/subscribeSocket';
 
 	export let data;

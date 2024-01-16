@@ -8,6 +8,7 @@ import { userSigninSchema } from '$lib/schemas';
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/');
 };
+
 type DefaultActionOutput = Promise<
 	ActionFailure<{ message: z.inferFormattedError<typeof userSigninSchema> }>
 >;

@@ -9,3 +9,13 @@ export const userSchema = z.object({
 
 export const userSignupSchema = userSchema.omit({ bio: true });
 export const userSigninSchema = userSchema.pick({ username: true, password: true });
+
+
+export const gameSchema = z.object({
+	players: z.array(z.string()).length(2),
+	actions: z.array(z.string()).default([])
+})
+
+export const gameCreateSchema = z.object({
+	players: z.array(z.string()).length(1),
+})
