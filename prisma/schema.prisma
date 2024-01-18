@@ -41,6 +41,7 @@ model Key {
 
 model Game {
   id         String   @id @unique
+  name       String
   created_at DateTime @default(now())
   victory    String?
   players    User[]   @relation("playersInGame")

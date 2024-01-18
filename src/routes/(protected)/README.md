@@ -1,15 +1,16 @@
 # (protected)
 
-Regroup all routes that require authentication. If not authenticated, redirect to login page, else pass user data to children.
+Regroup all routes that require authentication.
 
-The layout add a sub navigation to protected routes.
+``+layout.server.ts`` verifies that the user is authenticated, if not, redirect to login page, else pass user data to children.
+``+layout.svelte`` add a sub navigation to protected routes.
 
-## (profile) `/`
+## `/` (profile)
 
 ``+page.svelte`` display user profile with logout button.
 ``+page.server.ts`` contains the logout action.
 
-## games `/games`
+## `/games`
 
 Contains all functionalities related to games, which are :
 - create a new game
@@ -18,7 +19,19 @@ Contains all functionalities related to games, which are :
 - join a game
 - play a game
 
-``+layout.server.ts`` verifies that the user is authenticated, if not, redirect to login page.
-``+layout.svelte`` add a button to create a new game.
-``+page.svelte`` list all games created.
-``+page.server.ts`` fetch the list of games and contains the action to create a new game
+``+page.svelte`` list all games created. The user can join or open a game.
+``+page.server.ts`` load the list of games and contains the action to create a new game
+
+#### `/games/[id]`
+
+Contains all functionalities related to play or replay a game.
+
+``+page.server.ts`` loads the game with all actions done.
+``+page.svelte`` display the game, the sample card and the chat.
+
+#### `/games/current`
+
+List all games in progress of the current user.
+
+``+page.server.ts`` loads the current games with all actions done.
+``+page.svelte`` display the list of games in progress.

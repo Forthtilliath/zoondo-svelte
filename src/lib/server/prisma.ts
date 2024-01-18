@@ -27,10 +27,44 @@ export class Game {
 			}
 		});
 	}
+	static getGameById(id: string) {
+		return prismaClient.game.findUnique({
+			select: {
+				id: true,
+				players: true
+			},
+			where: {
+				id
+			}
+		});
+	}
 	static createGame(playerId: string) {
 		return prismaClient.game.create({
 			data: {
 				id: crypto.randomUUID(),
+				players: {
+					connect: [{
+						id: playerId
+					}]
+				}
+			}
+		});
+	}
+	static async joinGame(playerId: string, gameId: string) {
+		const game = await Game.getGameById(gameId);
+		if (!game) {
+			return { message: 'Game not found', status: 404 };
+		}
+		if (game.players.length === 2) {
+			return { message: 'Game already full', status: 409 };
+		}
+
+		console.log('Joining game', gameId, playerId, game);
+		return prismaClient.game.update({
+			where: {
+				id: gameId
+			},
+			data: {
 				players: {
 					connect: {
 						id: playerId
@@ -38,5 +72,28 @@ export class Game {
 				}
 			}
 		});
+	}
+}
+
+
+export class User {
+	static getUserByUsername(username: string) {
+		return prismaClient.user.findUnique({
+			where: {
+				username
+			}
+		});
+	}
+
+	static getUserById(id: string) {
+		return prismaClient.user.findUnique({
+			where: {
+				id
+			}
+		});
+	}
+
+	static getUsers() {
+		return prismaClient.user.findMany();
 	}
 }

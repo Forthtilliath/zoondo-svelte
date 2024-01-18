@@ -5,6 +5,7 @@
 <menu>
 	<li><a href="/" class:active={$page.url.pathname === '/'}>Profile</a></li>
 	<li><a href="/games" class:active={$page.url.pathname === '/games'}>Games</a></li>
+	<li><a href="/games/new" class:active={$page.url.pathname === '/games/new'}>Create Game</a></li>
 	<li><a href="/games/current" class:active={$page.url.pathname === '/games/current'}>Current Games</a></li>
 </menu>
 
