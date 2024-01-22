@@ -31,6 +31,7 @@ export const actions = {
 					}
 					if (e instanceof Error) {
 						console.error(e.message);
+						return createActionError(500, [e.message]);
 					}
 					return createActionError(500, ['An unknown error occurred']);
 				}
