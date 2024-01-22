@@ -9,7 +9,7 @@
 	<h2>Create a game</h2>
 	<div>
 		<label for="gameName">Name :</label>
-		<input value="forth" name="gameName" id="gameName" />
+		<input value="" name="gameName" id="gameName" />
 		{#if form?.message?.gameName}<span>{form.message?.gameName._errors}</span>{/if}
 	</div>
 
