@@ -6,17 +6,24 @@
 	<li><a href="/" class:active={$page.url.pathname === '/'}>Profile</a></li>
 	<li><a href="/games" class:active={$page.url.pathname === '/games'}>Games</a></li>
 	<li><a href="/games/new" class:active={$page.url.pathname === '/games/new'}>Create Game</a></li>
-	<li><a href="/games/current" class:active={$page.url.pathname === '/games/current'}>Current Games</a></li>
+	<li>
+		<a href="/games/current" class:active={$page.url.pathname === '/games/current'}>Current Games</a
+		>
+	</li>
 </menu>
 
-<slot />
+<section>
+	<slot />
+</section>
 
 <style lang="scss">
 	menu {
 		display: flex;
 		gap: 1rem;
 		list-style: none;
-		margin: 0.5rem;
+		margin: 2rem auto;
+    padding-inline: 2rem;
+		max-width: 1200px;
 
 		a {
 			padding: 10px 20px;
@@ -37,5 +44,11 @@
 				outline: 2px solid rgb(11, 69, 184);
 			}
 		}
+	}
+
+	section {
+    margin-inline: auto;
+    padding-inline: 2rem;
+		max-width: 1200px;
 	}
 </style>

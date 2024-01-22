@@ -7,6 +7,7 @@ export class Game {
 		return prismaClient.game.findMany({
 			select: {
 				id: true,
+				name: true,
 				players: true
 			},
 			where: {
