@@ -11,7 +11,7 @@
 		{#each games as game}
 			<li>
 				<form method="post" action="?/join">
-					<span>{game.id}</span>
+					<span>{game.name}</span>
 					<span
 					class:notfull={game.players.length < 2}
 					class:full={game.players.length === 2}>

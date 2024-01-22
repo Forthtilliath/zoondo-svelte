@@ -12,9 +12,6 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	newgame: async ({ locals }) => {
-		Game.createGame(locals.user.userId);
-	},
 	join: async ({ locals, request }) => {
 		const formData = await request.formData();
 		const parsedData = gameJoinSchema.safeParse(Object.fromEntries(formData));
