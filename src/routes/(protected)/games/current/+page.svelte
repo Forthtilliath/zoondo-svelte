@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	$: ({currentGames, user} = data);
+	$: ({ currentGames, user } = data);
 </script>
 
 <h1>Rejoindre une partie</h1>
@@ -13,17 +13,17 @@
 		<li>
 			<form method="post" action="?/join">
 				{game.id}
-				{#if game.players.some( p => p.id === user.userId)}
+				{#if game.players.some((p) => p.id === user.userId)}
 					<button type="submit">Ouvrir la partie</button>
 				{:else if game.players.length < 2}
-					<button type="submit">Rejoindre</button>{:else}
-					<button disabled>Rejoindre</button>{/if}
+					<button type="submit">Rejoindre</button>
+				{:else}
+					<button disabled>Rejoindre</button>
+				{/if}
 			</form>
 		</li>
 	{/each}
 </ul>
-
-
 
 <style lang="scss">
 </style>

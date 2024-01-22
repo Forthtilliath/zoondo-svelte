@@ -1,12 +1,15 @@
 import { redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia';
 import { auth } from '$lib/server/lucia';
-import type { Actions } from './$types';
 import { userSigninSchema } from '$lib/schemas';
 import { createAction } from '$lib/methods/createAction';
-import { parseError } from '$lib/methods/parseError';
+import { createActionError } from '$lib/methods/createActionError';
 
-export const actions: Actions = {
+export const load = async ({ parent }) => {
+	await parent();
+};
+
+export const actions = {
 	default: async ({ request, locals }): F.ZodActionOutput<typeof userSigninSchema> => {
 		return await createAction({
 			request,
@@ -24,12 +27,12 @@ export const actions: Actions = {
 						e instanceof LuciaError &&
 						(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
 					) {
-						return parseError(400, ['Incorrect user or password']);
+						return createActionError(400, ['Incorrect user or password']);
 					}
 					if (e instanceof Error) {
 						console.error(e.message);
 					}
-					return parseError(500, ['An unknown error occurred']);
+					return createActionError(500, ['An unknown error occurred']);
 				}
 
 				throw redirect(302, '/');

@@ -1,12 +1,16 @@
 import { auth } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
-import type { Actions } from './$types';
 import { Prisma } from '@prisma/client';
 import { userSignupSchema } from '$lib/schemas';
 import { createAction } from '$lib/methods/createAction';
+import { createActionCustomError, createActionError } from '$lib/methods/createActionError.js';
 
-export const actions: Actions = {
+export const load = async ({ parent }) => {
+	await parent();
+};
+
+export const actions = {
 	default: async ({ request, locals }): F.ZodActionOutput<typeof userSignupSchema> => {
 		return createAction({
 			request,
@@ -33,24 +37,18 @@ export const actions: Actions = {
 				} catch (e) {
 					if (e instanceof Prisma.PrismaClientKnownRequestError) {
 						if (/email/i.test(e.message)) {
-							return fail(400, {
-								message: { email: { _errors: ['Email already taken'] }, _errors: [] }
-							});
+							return createActionCustomError(400, ['Email already taken'], 'email');
 						}
 						if (/username/i.test(e.message)) {
-							return fail(400, {
-								message: { username: { _errors: ['Username already taken'] }, _errors: [] }
-							});
+							return createActionCustomError(400, ['Username already taken'], 'username');
 						}
 					}
 					if (e instanceof Error) {
 						console.error(e.message);
 					}
-					return fail(500, {
-						message: { _errors: ['An unknown error occurred'] }
-					});
+					return createActionError(500, ['An unknown error occurred']);
 				}
-				console.log("====")
+				
 				throw redirect(302, '/');
 			}
 		});

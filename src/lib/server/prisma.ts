@@ -38,14 +38,22 @@ export class Game {
 			}
 		});
 	}
-	static createGame(playerId: string) {
+	static async createGame(
+		creatorId: string,{
+		gameName,
+		friendName
+	}: {
+		gameName: string;
+		friendName?: string;
+	}) {
+		const friend = friendName ? await User.getUserByUsername(friendName) : null;
+		const playersId = friend ? [creatorId, friend.id] : [creatorId];
 		return prismaClient.game.create({
 			data: {
 				id: crypto.randomUUID(),
+				name: gameName,
 				players: {
-					connect: [{
-						id: playerId
-					}]
+					connect: playersId.map((id) => ({ id }))
 				}
 			}
 		});
@@ -74,7 +82,6 @@ export class Game {
 		});
 	}
 }
-
 
 export class User {
 	static getUserByUsername(username: string) {
