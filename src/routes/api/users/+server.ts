@@ -1,9 +1,8 @@
 import { json } from '@sveltejs/kit';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import db from '$lib/queries';
 
 export async function GET() {
-	const users = await prisma.user.findMany();
+	const users = await db.users.getUsers();
 
 	return json(users);
 }

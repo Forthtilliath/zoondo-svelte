@@ -8,13 +8,15 @@
 	{#each games as game}
 		<li>
 			<form method="post" action="?/join">
-				<span>{game.name}</span>
+				<div>
+					<span>{game.name}</span>
+				</div>
 				<span class:notfull={game.players.length < 2} class:full={game.players.length === 2}>
 					{game.players.length}/2
 				</span>
 				<input type="hidden" name="gameId" value={game.id} />
 				{#if game.players.some((p) => p.id === user.userId)}
-					<button type="submit">Ouvrir la partie</button>
+					<button type="submit" disabled={game.players.length !== 2}>Ouvrir la partie</button>
 				{:else}
 					<button type="submit" disabled={game.players.length === 2}>Rejoindre</button>
 				{/if}
@@ -31,9 +33,6 @@
 	}
 	li {
 		line-height: 2rem;
-	}
-	button {
-		cursor: pointer;
 	}
 	.notfull {
 		color: green;

@@ -24,6 +24,10 @@ h2 {
 	font-size: 2rem;
 }
 
+button:not([disabled]) {
+	cursor: pointer;
+}
+
 // Labels accessibles mais invisibles
 .sr-only {
 	position: absolute;

@@ -1,10 +1,10 @@
 import { fail, type Actions } from '@sveltejs/kit';
-import { Game } from '$lib/server/prisma';
 import type { PageServerLoad } from '../$types';
 import { gameJoinSchema } from '$lib/schemas';
+import db from '$lib/queries';
 
 export const load: PageServerLoad = async () => {
-	const games = await Game.getGames();
+	const games = await db.games.getGames();
 
 	return {
 		games
@@ -22,6 +22,6 @@ export const actions: Actions = {
 			});
 		}
 
-		Game.joinGame(locals.user.userId, parsedData.data.gameId);
+		await db.games.joinGame(locals.user.userId, parsedData.data.gameId);
 	}
 };

@@ -1,8 +1,8 @@
 import type { PageServerLoad } from './$types';
-import { Game } from '$lib/server/prisma';
+import db from '$lib/queries';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const currentGames = await Game.getGamesByPlayerId(locals.user.userId);
+	const currentGames = await db.games.getGamesByPlayerId(locals.user.userId);
 
 	return {
 		currentGames

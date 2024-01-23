@@ -1,12 +1,12 @@
 import { redirect } from '@sveltejs/kit';
-import { Game, User } from '$lib/server/prisma';
 import { gameCreateSchema } from '$lib/schemas';
 import { createAction } from '$lib/methods/createAction.js';
+import db from '$lib/queries';
 
 export const load = async ({ parent }) => {
 	await parent();
 
-	const users = await User.getUsers();
+	const users = await db.users.getUsers();
 
 	return {
 		users
@@ -18,8 +18,12 @@ export const actions = {
 		return createAction({
 			request,
 			schema: gameCreateSchema,
-			callback: async (data) => {
-				const newGame = await Game.createGame(locals.user.userId, data);
+			callback: async ({ gameName, friendName }) => {
+				const creatorId = locals.user.userId;
+				const friend = await db.users.getUserByUsername(friendName);
+				const playersId = friend ? [creatorId, friend.id] : [creatorId];
+				const formatedPlayers = playersId.map((id) => ({ id }));
+				const newGame = await db.games.createGame(gameName, formatedPlayers);
 
 				throw redirect(302, '/games/' + newGame.id);
 			}
