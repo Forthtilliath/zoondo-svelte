@@ -1,7 +1,6 @@
 import { type ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
-
-const messages: Array<Chat.Message> = [];
+import { db } from '../lib/data/db';
 
 export default {
 	name: 'webSocketServer',
@@ -13,21 +12,18 @@ export default {
 		io.on('connection', (socket) => {
 			socket.emit('serverNotice', 'Hello World !');
 
-			socket.on('joinRoom', (room) => {
+			socket.on('joinRoom', async (room) => {
 				socket.join(room);
 
-				socket.emit('lastMessages', messages);
+				socket.emit('lastMessages', await db.getMessages(room));
 
-				socket.on('message', (content, userId) => {
-					const msg = {
-						id: 1,
-						userId,
-						content,
-						time: Date.now()
+				socket.on('message', (content, user_id) => {
+					const msg: Omit<Chat.Message, 'id' | 'created_at'> = {
+						user_id,
+						room,
+						content
 					};
-)
-
-					//messages.push(msg);
+					db.createMessage(msg);
 					io.to(room).emit('newMessage', msg);
 				});
 			});
