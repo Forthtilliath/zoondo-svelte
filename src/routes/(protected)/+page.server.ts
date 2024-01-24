@@ -13,7 +13,6 @@ export const actions: Actions = {
 		if (!session) return fail(401);
 		await auth.invalidateSession(session.sessionId);
 		locals.auth.setSession(null);
-		locals.user = null;
 		throw redirect(302, '/signin');
 	}
 };

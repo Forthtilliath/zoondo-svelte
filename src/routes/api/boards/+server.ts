@@ -1,21 +1,26 @@
 import { json } from '@sveltejs/kit';
 import { generatePositions } from '$lib/game';
 import { cardsOnBoard } from '$lib/data/mock';
+import { db } from '$lib/data/db.js';
 
-export function GET() {
-	const idPlayer = 1;
-	let board: Array<Game.Position> = generatePositions(0, 5);
+export async function POST({ locals }) {
+	// const idPlayer = 1;
+	// let board: Array<Game.Position> = generatePositions(0, 5);
 
-	board = board.map((square) => {
-		let squareContent: Game.CardInstance | undefined | null = cardsOnBoard.find(
-			(candidate) => candidate.x === square.x && candidate.y === square.y
-		);
-		if (squareContent && squareContent.owner !== idPlayer) {
-			squareContent = { card: null, owner: squareContent.owner };
-		}
+	// const formData = await request.formData();
+	const opponentId = 'rtsq83ohie4jxyl';
+	const game = await db.createGame(opponentId, opponentId);
 
-		return { ...square, ...squareContent };
-	});
+	// board = board.map((square) => {
+	// 	let squareContent: Game.CardInstance | undefined | null = cardsOnBoard.find(
+	// 		(candidate) => candidate.x === square.x && candidate.y === square.y
+	// 	);
+	// 	if (squareContent && squareContent.owner !== idPlayer) {
+	// 		squareContent = { card: null, owner: squareContent.owner };
+	// 	}
 
-	return json(board);
+	// 	return { ...square, ...squareContent };
+	// });
+
+	return json(game);
 }

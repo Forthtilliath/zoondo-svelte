@@ -1,6 +1,6 @@
 <nav>
 	<a href="/" class="Logo">Next Template</a>
-	<a href="/">Link #1</a>
+	<a href="/game">Current (only) game</a>
 	<a href="/">Link #2</a>
 	<a href="/">Link #3</a>
 </nav>
