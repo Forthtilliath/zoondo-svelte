@@ -3,8 +3,7 @@
 	import { afterUpdate } from 'svelte';
 
 	export let room = 'waiting';
-
-	const userId = 1;
+	export let userId:string;
 
 	const { socket, messages } = subscribeSocket(room);
 
@@ -20,7 +19,7 @@
 
 	let currMsg = '';
 	const hClickSend = () => {
-		socket.emit('message', currMsg);
+		socket.emit('message', currMsg,userId);
 		currMsg = '';
 	};
 
@@ -29,7 +28,7 @@
 <div class="wrapper">
 	<ul bind:this={ul}>
 		{#each $messages as msg}
-			<li class={msg.userId === userId ? 'me' : 'him'}>{msg.content}</li>
+			<li class={msg.user_id === userId ? 'me' : 'him'}>{msg.content}</li>
 		{/each}
 	</ul>
 	<form on:submit|preventDefault={hClickSend}>

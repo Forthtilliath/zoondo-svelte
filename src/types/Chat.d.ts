@@ -1,10 +1,11 @@
 declare global {
 	namespace Chat {
 		type Message = {
-			id: number;
-			userId: number;
+			id: string;
+			room: string;
+			user_id: string;
 			content: string;
-			time: number;
+			created_at: number;
 		};
 	}
 }

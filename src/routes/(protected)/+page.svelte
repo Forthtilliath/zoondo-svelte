@@ -16,4 +16,4 @@
 </form>
 
 <h1>Waiting Room</h1>
-<Chat />
+<Chat userId={user.userId}/>
