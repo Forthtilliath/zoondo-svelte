@@ -8,27 +8,19 @@ datasource db {
 }
 
 model User {
-  id         String    @id @unique
-  username   String    @unique
-  email      String    @unique
-  bio        String?
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  Session    Session[]
-  Key        Key[]
-  Game       Game[]    @relation("playersInGame")
-  Action     Action[]
-  Victories  Game[]
-}
-
-model Session {
-  id             String @id @unique
-  user_id        String
-  active_expires BigInt
-  idle_expires   BigInt
-  auth_user      User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-  @@index([user_id])
+  id           String       @id @unique
+  username     String       @unique
+  email        String       @unique
+  bio          String?
+  created_at   DateTime     @default(now())
+  updated_at   DateTime?
+  Session      Session[]
+  Key          Key[]
+  GamesCreated Game[]       @relation("games_created_by_user")
+  GamesPlayed  Game[]       @relation("games_played_by_user")
+  GamesWon     GameDetail[] @relation("games_won_by_user")
+  GamesFirst   GameDetail[] @relation("games_first_player")
+  Action       Action[]     @relation("actions_played_by_user")
 }
 
 model Key {
@@ -36,28 +28,73 @@ model Key {
   hashed_password String?
   user_id         String
   expires         BigInt?
-  auth_user       User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  User            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
 }
 
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  User           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+// Room
 model Game {
-  id         String   @id @unique
-  name       String
-  created_at DateTime @default(now())
-  victory    String?
-  players    User[]   @relation("playersInGame")
-  actions    Action[]
-  user_won   User?    @relation(references: [id], fields: [victory])
+  id          String      @id @unique
+  name        String
+  created_at  DateTime    @default(now())
+  created_by  String
+  players     User[]      @relation("games_played_by_user")
+  game_detail GameDetail?
+  UserCreator User        @relation("games_created_by_user", references: [id], fields: [created_by])
+}
+
+model GameDetail {
+  id           String   @id @unique
+  game_id      String   @unique
+  first_player String
+  victory      String?
+  actions      Action[]
+  Game         Game     @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  UserFirst    User?    @relation("games_first_player", fields: [first_player], references: [id])
+  UserWon      User?    @relation("games_won_by_user", fields: [victory], references: [id])
+
+  @@index([game_id])
 }
 
 model Action {
-  id        Int    @id @default(autoincrement())
-  game_id   String
-  player_id String
-  from      String
+  id          Int         @id @default(autoincrement())
+  game_id     String
+  player_id   String
+  type        String
+  action_move ActionMove?
+  action_card ActionCard?
+  GameDetail  GameDetail  @relation(fields: [game_id], references: [id])
+  User        User        @relation("actions_played_by_user", fields: [player_id], references: [id])
+}
+
+model ActionMove {
+  action_id Int    @unique
+  target    String
+  move      String
+  result    Int
+  action    Action @relation(references: [id], fields: [action_id], onDelete: Cascade)
+
+  @@index([action_id])
+}
+
+model ActionCard {
+  action_id Int    @unique
+  card_id   Int
+  target    String
   to        String
   result    Int
-  Game      Game   @relation(fields: [game_id], references: [id])
-  User      User   @relation(fields: [player_id], references: [id])
+  action    Action @relation(references: [id], fields: [action_id], onDelete: Cascade)
+
+  @@index([action_id])
 }

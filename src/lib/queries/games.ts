@@ -10,14 +10,15 @@ export function getGames() {
 	});
 }
 
-export function getGameById(id: string) {
+export function getGameById(gameId: string) {
 	return prismaClient.game.findUnique({
 		select: {
 			id: true,
-			players: true
+			players: true,
+			created_by: true
 		},
 		where: {
-			id
+			id: gameId
 		}
 	});
 }
@@ -44,6 +45,7 @@ export async function createGame(gameName: string, playersId: { id: string }[]) 
 		data: {
 			id: crypto.randomUUID(),
 			name: gameName,
+			created_by: playersId[0].id,
 			players: {
 				connect: playersId
 			}
@@ -52,14 +54,6 @@ export async function createGame(gameName: string, playersId: { id: string }[]) 
 }
 
 export async function joinGame(playerId: string, gameId: string) {
-	const game = await getGameById(gameId);
-	if (!game) {
-		return { message: 'Game not found', status: 404 };
-	}
-	if (game.players.length === 2) {
-		return { message: 'Game already full', status: 409 };
-	}
-
 	return prismaClient.game.update({
 		where: {
 			id: gameId
@@ -70,6 +64,16 @@ export async function joinGame(playerId: string, gameId: string) {
 					id: playerId
 				}
 			}
+		}
+	});
+}
+
+export async function createGameDetail(gameId: string, firstPlayer: string) {
+	return prismaClient.gameDetail.create({
+		data: {
+			id: crypto.randomUUID(),
+			game_id: gameId,
+			first_player: firstPlayer
 		}
 	});
 }
