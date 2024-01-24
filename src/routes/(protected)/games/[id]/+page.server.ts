@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load = async ({ fetch, params, parent }) => {
+	await parent();
 	try {
 		const response = await fetch(`/api/games/${params.id}`);
 		const board: Game.Board = await response.json();

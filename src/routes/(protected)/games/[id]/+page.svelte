@@ -18,7 +18,7 @@
 		<CardSample />
 	</div>
 	<div class="Chat">
-		<Chat room="game#{data.gameId}"/>
+		<Chat room="game#{data.gameId}" userId={data.user.userId}/>
 	</div>
 </main>
 
