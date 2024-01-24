@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { subscribeSocket } from '$lib/methods/subscribeSocket';
 	import { afterUpdate } from 'svelte';
-	export let messages: Array<Chat.Message>;
+
+	export let room = 'waiting';
 
 	const userId = 1;
+
+	const { socket, messages } = subscribeSocket(room);
 
 	let ul: HTMLUListElement;
 
@@ -13,14 +17,29 @@
 			behavior: 'smooth'
 		});
 	});
+
+	let currMsg = '';
+	const hClickSend = () => {
+		socket.emit('message', currMsg);
+		currMsg = '';
+	};
+
 </script>
 
 <div class="wrapper">
 	<ul bind:this={ul}>
-		{#each messages as msg}
+		{#each $messages as msg}
 			<li class={msg.userId === userId ? 'me' : 'him'}>{msg.content}</li>
 		{/each}
 	</ul>
+	<form on:submit|preventDefault={hClickSend}>
+		<label>
+			<span class="sr-only">Message:</span>
+			<input type="text" bind:value={currMsg} />
+		</label>
+		<button>Send a message!</button>
+	</form>
+	
 </div>
 
 <style lang="scss">

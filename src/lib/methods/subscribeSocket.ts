@@ -2,9 +2,11 @@ import { addToast } from '$lib/stores/toast';
 import { io } from 'socket.io-client';
 import { writable } from 'svelte/store';
 
-export function subscribeSocket(initialMessages: Array<Chat.Message> = []) {
-	const messages = writable<Array<Chat.Message>>(initialMessages);
+export function subscribeSocket(room = 'waiting') {
+	const messages = writable<Array<Chat.Message>>([]);
 	const socket = io();
+
+	socket.emit('joinRoom', room);
 
 	socket.on('serverNotice', (msg: string) => {
 		addToast({ msg, type: 'notice' });

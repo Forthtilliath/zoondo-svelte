@@ -18,6 +18,7 @@ model User {
   Games    Game[]         @relation("playersInGame")
   Actions  Action[]       @relation("actionByPlayer")
   Cards    CardInstance[] @relation("cardOwnedByPlayer")
+  Messages Message[]      @relation("messageByPlayer")
 }
 
 model Session {
@@ -65,4 +66,13 @@ model CardInstance {
   owner    User     @relation("cardOwnedByPlayer", fields: [id], references: [id])
   position String // "hand" | "cemetery" | "x;y"
   actions  Action[] @relation("actionsOnCard")
+}
+
+model Message {
+  id       String   @id @unique
+  room     String
+  user_id  String
+  author   User     @relation("messageByPlayer", fields: [user_id], references: [id])
+  content  String 
+  created_at DateTime @default(now())
 }

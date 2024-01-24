@@ -1,18 +1,9 @@
 <script lang="ts">
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
-	import Chat from './(components)/Chat.svelte';
-	import { subscribeSocket } from '$lib/methods/subscribeSocket';
+	import Chat from '$lib/components/Chat.svelte';
 
 	export let data;
-	let currMsg = '';
-
-	const { socket, messages } = subscribeSocket([]);
-
-	const hClickSend = () => {
-		socket.emit('message', currMsg);
-		currMsg = '';
-	};
 </script>
 
 <svelte:head>
@@ -27,14 +18,7 @@
 		<CardSample />
 	</div>
 	<div class="Chat">
-		<Chat messages={$messages} />
-		<form on:submit|preventDefault={hClickSend}>
-			<label>
-				<span class="sr-only">Message:</span>
-				<input type="text" bind:value={currMsg} />
-			</label>
-			<button>Send a message!</button>
-		</form>
+		<Chat room="game#{data.gameId}"/>
 	</div>
 </main>
 

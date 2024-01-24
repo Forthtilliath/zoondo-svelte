@@ -3,8 +3,8 @@ import { redirect, type Actions, fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	if (!locals.user) throw redirect(302, '/signin');
+export const load: PageServerLoad = async ({ parent }) => {
+	await parent();
 };
 
 export const actions: Actions = {

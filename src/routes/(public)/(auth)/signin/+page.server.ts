@@ -38,9 +38,6 @@ export const actions: Actions = {
 			) {
 				return fail(400, { message: { _errors: ['Incorrect user or password'] } });
 			}
-			console.log('--- ERROR SIGNUP');
-			console.log(e);
-			console.log('---/ERROR SIGNUP');
 			return fail(500, {
 				message: { _errors: ['An unknown error occurred'] }
 			});
