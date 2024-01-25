@@ -4,23 +4,28 @@
 	import Chat from '$lib/components/Chat.svelte';
 
 	export let data;
+	$: ({
+		user: { userId }
+	} = data);
 </script>
 
 <svelte:head>
-	<title>Zoondo : Board</title>
+	<title>Zoondo : Game</title>
 </svelte:head>
 
-<main>
-	<div class="Board">
-		<Board board={data.board} />
-	</div>
-	<div class="CardSample">
-		<CardSample />
-	</div>
-	<div class="Chat">
-		<Chat room="game#{data.gameId}" userId={data.user.userId}/>
-	</div>
-</main>
+{#if data.success}
+	<main>
+		<div class="Board">
+			<Board board={data.board} />
+		</div>
+		<div class="CardSample">
+			<CardSample />
+		</div>
+		<div class="Chat">
+			<Chat room="game#{data.gameId}" {userId} />
+		</div>
+	</main>
+{/if}
 
 <style lang="scss">
 	main {

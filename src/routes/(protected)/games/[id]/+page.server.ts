@@ -6,6 +6,7 @@ export const load = async ({ fetch, params, parent }) => {
 		const response = await fetch(`/api/games/${params.id}`);
 		const board: Game.Board = await response.json();
 		return {
+			success: true,
 			board,
 			gameId: params.id
 		};
