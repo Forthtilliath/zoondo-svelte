@@ -7,7 +7,7 @@ export default {
 	configureServer(server: ViteDevServer) {
 		if (!server.httpServer) return;
 
-		const io = new Server(server.httpServer);
+		const io = new Server<ServerToClientEvents>(server.httpServer);
 
 		io.on('connection', (socket) => {
 			socket.emit('serverNotice', 'Hello World !');
@@ -18,7 +18,8 @@ export default {
 				socket.emit('lastMessages', await db.getMessages(room));
 
 				socket.on('message', (content, user_id) => {
-					const msg: Omit<Chat.Message, 'id' | 'created_at'> = {
+					const msg: DB.MessageCreate = {
+						id: crypto.randomUUID(),
 						user_id,
 						room,
 						content
