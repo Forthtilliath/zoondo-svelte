@@ -22,7 +22,7 @@
 			<CardSample />
 		</div>
 		<div class="Chat">
-			<Chat room="game#{data.gameId}" {userId} />
+			<Chat room="game#{data.gameId}" {userId} isInGame={data.players.includes(userId)} />
 		</div>
 	</main>
 {/if}

@@ -2,8 +2,10 @@
 	import { subscribeSocket } from '$lib/methods/subscribeSocket';
 	import { afterUpdate } from 'svelte';
 
-	export let room = 'waiting';
-	export let userId:string;
+	export let room: string;
+	export let userId: string;
+	export let isInGame: boolean = false;
+	$: canWrite = isInGame || room === 'waiting';
 
 	const { socket, messages } = subscribeSocket(room);
 
@@ -19,10 +21,9 @@
 
 	let currMsg = '';
 	const hClickSend = () => {
-		socket.emit('message', currMsg,userId);
+		socket.emit('message', currMsg, userId);
 		currMsg = '';
 	};
-
 </script>
 
 <div class="wrapper">
@@ -31,14 +32,17 @@
 			<li class={msg.user_id === userId ? 'me' : 'him'}>{msg.content}</li>
 		{/each}
 	</ul>
-	<form on:submit|preventDefault={hClickSend}>
-		<label>
-			<span class="sr-only">Message:</span>
-			<input type="text" bind:value={currMsg} />
-		</label>
-		<button>Send a message!</button>
-	</form>
-	
+	{#if canWrite}
+		<form on:submit|preventDefault={hClickSend}>
+			<label>
+				<span class="sr-only">Message:</span>
+				<input type="text" bind:value={currMsg} />
+			</label>
+			<button>Send a message!</button>
+		</form>
+	{:else}
+		<p>You are not allowed to write in this room</p>
+	{/if}
 </div>
 
 <style lang="scss">

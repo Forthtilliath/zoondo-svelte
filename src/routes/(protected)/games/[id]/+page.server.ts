@@ -8,7 +8,8 @@ export const load = async ({ fetch, params, parent }) => {
 		return {
 			success: true,
 			board,
-			gameId: params.id
+			gameId: params.id,
+			players: ['g7ep1pxxvxb403n', 'rtsq83ohie4jxyl'] // forth & vcode
 		};
 	} catch (err) {
 		if (err instanceof Error) {
