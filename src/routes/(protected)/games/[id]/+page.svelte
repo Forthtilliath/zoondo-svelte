@@ -13,10 +13,12 @@
 	<title>Zoondo : Game</title>
 </svelte:head>
 
-{#if data.success}
+{#await data.board}
+	<p>Loading...</p>
+{:then board}
 	<main>
 		<div class="Board">
-			<Board board={data.board} />
+			<Board {board} />
 		</div>
 		<div class="CardSample">
 			<CardSample />
@@ -25,7 +27,9 @@
 			<Chat room="game#{data.gameId}" {userId} isInGame={data.players.includes(userId)} />
 		</div>
 	</main>
-{/if}
+{:catch err}
+	<p>Error : {err.message}</p>
+{/await}
 
 <style lang="scss">
 	main {
