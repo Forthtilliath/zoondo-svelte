@@ -7,7 +7,7 @@
 
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
-		
+
 		const cardId = evt.dataTransfer.getData('cardId');
 
 		const coords = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;

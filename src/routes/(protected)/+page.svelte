@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { enhance } from "$app/forms";
-	import type { PageData } from "./$types";
+	import { enhance } from '$app/forms';
 	import Chat from '$lib/components/Chat.svelte';
 
-	export let data: PageData;
+	export let data;
 
 	$: user = data.user;
 </script>
@@ -16,4 +15,4 @@
 </form>
 
 <h1>Waiting Room</h1>
-<Chat userId={user.userId}/>
+<Chat userId={user.userId} />

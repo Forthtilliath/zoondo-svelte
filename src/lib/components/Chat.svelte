@@ -3,7 +3,7 @@
 	import { afterUpdate } from 'svelte';
 
 	export let room = 'waiting';
-	export let userId:string;
+	export let userId: string;
 
 	const { socket, messages } = subscribeSocket(room);
 
@@ -19,10 +19,9 @@
 
 	let currMsg = '';
 	const hClickSend = () => {
-		socket.emit('message', currMsg,userId);
+		socket.emit('message', currMsg, userId);
 		currMsg = '';
 	};
-
 </script>
 
 <div class="wrapper">
@@ -38,7 +37,6 @@
 		</label>
 		<button>Send a message!</button>
 	</form>
-	
 </div>
 
 <style lang="scss">

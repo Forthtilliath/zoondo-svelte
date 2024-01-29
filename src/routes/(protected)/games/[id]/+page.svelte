@@ -4,13 +4,17 @@
 	import Chat from '$lib/components/Chat.svelte';
 
 	export let data;
+	$: ({
+		user: { userId }
+	} = data);
 </script>
 
 <svelte:head>
-	<title>Zoondo : Board</title>
+	<title>Zoondo : Game</title>
 </svelte:head>
 
 <main>
+	{#if data.board}
 	<div class="Board">
 		<Board board={data.board} />
 	</div>
@@ -18,8 +22,9 @@
 		<CardSample />
 	</div>
 	<div class="Chat">
-		<Chat room="game#{data.gameId}" userId={data.user.userId}/>
+		<Chat room="game#{data.gameId}" {userId} />
 	</div>
+	{/if}
 </main>
 
 <style lang="scss">

@@ -15,8 +15,7 @@ const config = {
 		alias: {
 			$styles: 'src/styles'
 		}
-	},
-
+	}
 };
 
 export default config;

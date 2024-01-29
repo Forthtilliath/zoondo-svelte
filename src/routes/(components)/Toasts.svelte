@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {currentToasts} from "$lib/stores/toast"
+	import { currentToasts } from '$lib/stores/toast';
 </script>
 
 <ul>
@@ -9,36 +9,36 @@
 </ul>
 
 <style lang="scss">
-  ul {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    display: flex;
-    margin-top: 1rem;
-    justify-content: center;
-    flex-direction: column;
-    z-index: 1;
-
-	li {
-		color: white;
-		padding: 0.75rem 1.5rem;
-		border-radius: 0.2rem;
+	ul {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
 		display: flex;
-		align-items: center;
-		margin: 0 auto 0.5rem auto;
-		width: 20rem;
+		margin-top: 1rem;
+		justify-content: center;
+		flex-direction: column;
+		z-index: 1;
 
-		&.error {
-			background: IndianRed;
+		li {
+			color: white;
+			padding: 0.75rem 1.5rem;
+			border-radius: 0.2rem;
+			display: flex;
+			align-items: center;
+			margin: 0 auto 0.5rem auto;
+			width: 20rem;
+
+			&.error {
+				background: IndianRed;
+			}
+			&.success {
+				background: MediumSeaGreen;
+			}
+			&.notice {
+				background: SkyBlue;
+			}
 		}
-		&.success {
-			background: MediumSeaGreen;
-		}
-		&.notice {
-			background: SkyBlue;
-		}
-  }
-}
+	}
 </style>
