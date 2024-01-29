@@ -13,23 +13,23 @@
 	<title>Zoondo : Game</title>
 </svelte:head>
 
-{#await data.board}
-	<p>Loading...</p>
-{:then board}
-	<main>
-		<div class="Board">
+<main>
+	<div class="Board">
+		{#await data.board}
+			<p>Loading...</p>
+		{:then board}
 			<Board {board} />
-		</div>
-		<div class="CardSample">
-			<CardSample />
-		</div>
-		<div class="Chat">
-			<Chat room="game#{data.gameId}" {userId} isInGame={data.players.includes(userId)} />
-		</div>
-	</main>
-{:catch err}
-	<p>Error : {err.message}</p>
-{/await}
+		{:catch err}
+			<p>Error : {err.message}</p>
+		{/await}
+	</div>
+	<div class="CardSample">
+		<CardSample />
+	</div>
+	<div class="Chat">
+		<Chat room="game#{data.gameId}" {userId} isInGame={data.players.includes(userId)} />
+	</div>
+</main>
 
 <style lang="scss">
 	main {
