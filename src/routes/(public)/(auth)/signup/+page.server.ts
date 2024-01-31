@@ -55,6 +55,9 @@ export const actions: Actions = {
 					});
 				}
 			}
+			if (e instanceof Error) {
+				console.error(e.message);
+			}
 			return fail(500, {
 				message: 'An unknown error occurred'
 			});

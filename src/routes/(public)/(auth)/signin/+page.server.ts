@@ -38,6 +38,9 @@ export const actions: Actions = {
 			) {
 				return fail(400, { message: { _errors: ['Incorrect user or password'] } });
 			}
+			if (e instanceof Error) {
+				console.error(e.message);
+			}
 			return fail(500, {
 				message: { _errors: ['An unknown error occurred'] }
 			});
