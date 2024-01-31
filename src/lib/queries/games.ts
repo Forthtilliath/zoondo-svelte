@@ -13,4 +13,11 @@ export function createGame(p1: string, p2: string) {
 	});
 }
 
-
+export function getGame(game_id: string) {
+	return prismaClient.game.findUnique({
+		where: {
+			game_id
+		},
+		include: { actions: true, cards: true }
+	});
+}

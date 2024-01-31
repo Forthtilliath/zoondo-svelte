@@ -14,9 +14,15 @@
 </svelte:head>
 
 <main>
-	{#if data.board}
 	<div class="Board">
-		<Board board={data.board} />
+		{#await data.board}
+			<p>Loading...</p>
+		{:then board}
+			<!-- <Board {board} /> -->
+			Board
+		{:catch err}
+			<p>Error : {err.message}</p>
+		{/await}
 	</div>
 	<div class="CardSample">
 		<CardSample />
@@ -24,7 +30,6 @@
 	<div class="Chat">
 		<Chat room="game#{data.gameId}" {userId} />
 	</div>
-	{/if}
 </main>
 
 <style lang="scss">
