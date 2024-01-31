@@ -7,7 +7,7 @@ declare global {
 
 	interface ClientToServerEvents {
 		joinRoom: (room: string) => void;
-		message: (content: string, user_id: string) => void;
+		message: (content: string, author_id: string) => void;
 	}
 }
 
