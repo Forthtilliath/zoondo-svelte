@@ -16,3 +16,15 @@
 
 <h1>Waiting Room</h1>
 <Chat userId={user.userId} />
+
+<form method="post" action="?/fight" use:enhance>
+	<label>Choose a challenger:
+		<input list="opponent-candidates" name="opponent" type="search"/>
+	</label>
+	<datalist id="opponent-candidates">
+		<option value="ValhallaCode"></option>
+		<option value="Forth"></option>
+		<option value="Guillaume37"></option>
+	</datalist>
+	<input type="submit" value="Fight!" />
+</form>

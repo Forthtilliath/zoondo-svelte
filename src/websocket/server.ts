@@ -18,7 +18,7 @@ export default {
 				socket.emit('lastMessages', await db.getMessages(room));
 
 				socket.on('message', async (content, user_id) => {
-					const msg: DB.MessageToInsert = {
+					const msg: DB.MessageCreate = {
 						id: crypto.randomUUID(),
 						user_id,
 						room,

@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id        String         @id @unique
-  username  String         @unique
-  email     String         @unique
-  bio       String?
-  Session   Session[]
-  Key       Key[]
-  Victories Game[]
-  Games     Game[]         @relation("playersInGame")
-  Actions   Action[]       @relation("actionByPlayer")
-  Cards     CardInstance[] @relation("cardOwnedByPlayer")
-  Messages  Message[]
+  user_id  String  @id @unique
+  username String  @unique
+  email    String  @unique
+  bio      String?
+
+  // Relations
+  Session    Session[]
+  Key        Key[]
+  Messages   Message[]
+  CardsOwned CardInstance[]
+  Actions    Action[]
+  GamesAsP1  Game[]         @relation("Player1")
+  GamesAsP2  Game[]         @relation("Player2")
 }
 
 model Session {
@@ -26,8 +28,9 @@ model Session {
   user_id        String
   active_expires BigInt
   idle_expires   BigInt
-  // FK
-  auth_user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  // Relations
+  auth_user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -38,47 +41,76 @@ model Key {
   user_id         String
   expires         BigInt?
   // FK
-  auth_user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  auth_user       User    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id])
 }
 
 model Game {
-  id            String   @id @unique @default(uuid())
-  created_at    DateTime @default(now())
-  ongoing       Boolean  @default(true)
-  currentPlayer Boolean  @default(true) // true -> P1 ; false -> P2
-  victory       String?
-  Players       User[]   @relation("playersInGame")
-  Actions       Action[] @relation("actionInGame")
+  game_id      String   @id @unique
+  created_at   DateTime @default(now())
+  current_turn Int
+  game_status  String // waiting | ongoing | finished
+
   // FK
-  user_won      User?    @relation(fields: [victory], references: [id])
+  player1_id String // Changed to String
+  player2_id String // Changed to String
+
+  // Relationships
+  player1 User           @relation("Player1", fields: [player1_id], references: [user_id])
+  player2 User           @relation("Player2", fields: [player2_id], references: [user_id])
+  actions Action[] // Added to represent actions related to the game
+  cards   CardInstance[]
 }
 
 model Action {
-  id          String       @id @unique
-  game        Game         @relation("actionInGame", fields: [id], references: [id])
-  owner       User         @relation("actionByPlayer", fields: [id], references: [id])
-  instance    CardInstance @relation("actionsOnCard", fields: [id], references: [id])
-  destination String // "hand" | "cemetery" | "x;y"
+  action_id String @id @unique
+
+  // FK
+  game_id         String
+  player_id       String
+  cardinstance_id String
+
+  // Relationships
+  game          Game         @relation(fields: [game_id], references: [game_id])
+  player        User         @relation(fields: [player_id], references: [user_id])
+  card_instance CardInstance @relation(fields: [cardinstance_id], references: [cardinstance_id])
+  destination   String // "hand" | "cemetery" | "x;y"
+}
+
+model Card {
+  card_id String @id @unique
+  name    String
+  stats   String
+  moves   String
+
+  // Relations
+  instances CardInstance[]
 }
 
 model CardInstance {
-  id       String   @id @unique
-  card     String
-  user_id  String
-  position String // "hand" | "cemetery" | "x;y"
-  actions  Action[] @relation("actionsOnCard")
+  cardinstance_id String @id @unique
+  position        String // "hand" | "cemetery" | "x;y"
+
   // FK
-  owner    User     @relation("cardOwnedByPlayer", fields: [user_id], references: [id])
+  card_id  String // Changed to String
+  game_id  String // Changed to String
+  owner_id String // Changed to String
+
+  // Relationships
+  card    Card     @relation(fields: [card_id], references: [card_id])
+  game    Game     @relation(fields: [game_id], references: [game_id])
+  player  User     @relation(fields: [owner_id], references: [user_id])
+  Actions Action[]
 }
 
 model Message {
   id         String   @id @unique
   room       String
-  user_id    String
+  author_id  String
   content    String
   created_at DateTime @default(now())
-  // FK
-  author     User     @relation(fields: [user_id], references: [id])
+
+  // Relations
+  author User @relation(fields: [author_id], references: [user_id], onDelete: Cascade)
 }
