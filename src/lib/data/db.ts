@@ -13,6 +13,13 @@ export const db = {
 			//select: { Players: true }
 		});
 	},
+	getGame: function (game_id: string) {
+		return prismaClient.game.findFirst({
+			where: { game_id },
+			include: { actions: true, cards: true }
+		});
+	},
+
 	createMessage: function (data: DB.MessageCreate) {
 		return prismaClient.message.create({ data });
 	},

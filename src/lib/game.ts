@@ -51,3 +51,7 @@ export function movesToTransitions(
 
 	return transitions;
 }
+
+export function generateBoard() {
+	// TODO !
+}

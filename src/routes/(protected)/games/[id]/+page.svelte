@@ -7,6 +7,8 @@
 	$: ({
 		user: { userId }
 	} = data);
+	console.log(data.board);
+	
 </script>
 
 <svelte:head>
