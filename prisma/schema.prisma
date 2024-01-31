@@ -94,9 +94,9 @@ model CardInstance {
   position        String // "hand" | "cemetery" | "x;y"
 
   // FK
-  card_id  String // Changed to String
-  game_id  String // Changed to String
-  owner_id String // Changed to String
+  card_id  String 
+  game_id  String 
+  owner_id String 
 
   // Relationships
   card    Card     @relation(fields: [card_id], references: [card_id])
