@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-node": "^2.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/node": "^20.11.14",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"cz-conventional-changelog": "^3.3.0",
@@ -28,8 +29,9 @@
 		"sass": "^1.69.5",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",
+		"ts-node": "^10.9.2",
 		"tslib": "^2.4.1",
-		"typescript": "^5.0.0",
+		"typescript": "^5.3.3",
 		"vite": "^5.0.0"
 	},
 	"type": "module",
@@ -44,5 +46,8 @@
 		"socket.io": "^4.7.2",
 		"socket.io-client": "^4.7.2",
 		"zod": "^3.22.4"
+	},
+	"prisma": {
+		"seed": "npx ts-node --esm prisma/seed.ts"
 	}
 }
