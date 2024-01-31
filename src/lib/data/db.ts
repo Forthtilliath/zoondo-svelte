@@ -13,19 +13,12 @@ export const db = {
 			//select: { Players: true }
 		});
 	},
-	initGame: function (game: DB.Game) {
-		//Mock
-
-		return game;
-	},
-
 	createMessage: function (data: DB.MessageCreate) {
 		return prismaClient.message.create({ data });
 	},
 	getMessages: function (room: string) {
 		return prismaClient.message.findMany({ where: { room } });
 	},
-
 	createAction: function (action: DB.ActionCreate) {
 		return prismaClient.action.create({
 			data: {
@@ -37,15 +30,11 @@ export const db = {
 			}
 		});
 	},
-
-	createCardInstance: function (action: DB.CardInstanceCreate) {
+	createCardInstance: function (data: DB.CardInstanceCreate) {
 		return prismaClient.cardInstance.create({
 			data: {
-				cardinstance_id: crypto.randomUUID(), // SQLite
-				card_id: action.card_id,
-				position: '2;2',
-				owner_id: action.owner_id,
-				game_id: action.game_id
+				...data,
+				cardinstance_id: crypto.randomUUID() // SQLite
 			}
 		});
 	}

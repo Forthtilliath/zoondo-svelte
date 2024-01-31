@@ -27,9 +27,58 @@ export const actions = {
 		const opponentId = opponent.id;
 		const challengerId = locals.user.userId;
 
-		let game = await db.createGame(opponentId, challengerId);
-		const gameId = game.id;
-		game = await db.initGame(game);
-		throw redirect(302, `/games/${gameId}`);
+		const game = await db.createGame(opponentId, challengerId);
+
+		const challengerDeck = [
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon'
+		];
+		const opponentDeck = [
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon',
+			'cloboulon'
+		];
+
+		challengerDeck.map(async (card, idx) => {
+			const instance = await db.createCardInstance({
+				card_id: card,
+				game_id: game.game_id,
+				owner_id: challengerId,
+				position: '',
+				cardinstance_id: ''
+			});
+			await db.createAction({
+				action_id: '',
+				cardinstance_id: instance.cardinstance_id,
+				destination: `${idx};1`,
+				game_id: game.game_id,
+				player_id: challengerId
+			});
+		});
+		opponentDeck.map(async (card, idx) => {
+			const instance = await db.createCardInstance({
+				card_id: card,
+				game_id: game.game_id,
+				owner_id: opponentId,
+				position: '',
+				cardinstance_id: ''
+			});
+			await db.createAction({
+				action_id: '',
+				cardinstance_id: instance.cardinstance_id,
+				destination: `${idx};4`,
+				game_id: game.game_id,
+				player_id: opponentId
+			});
+		});
+
+		throw redirect(302, `/games/${game.game_id}`);
 	}
 };
