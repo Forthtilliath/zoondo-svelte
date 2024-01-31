@@ -4,8 +4,11 @@ export const db = {
 	createGame: function (p1: string, p2: string) {
 		return prismaClient.game.create({
 			data: {
-				id: crypto.randomUUID(), // SQLite
-				Players: { connect: [{ id: p1 }, { id: p2 }] }
+				game_id: crypto.randomUUID(), // SQLite
+				player1: { connect: { id: p1 } },
+				player2: { connect: { id: p2 } },
+				current_turn: 0,
+				game_status: 'ongoing'
 			}
 			//select: { Players: true }
 		});
@@ -26,10 +29,10 @@ export const db = {
 	createAction: function (action: DB.ActionCreate) {
 		return prismaClient.action.create({
 			data: {
-				id: crypto.randomUUID(), // SQLite
+				action_id: crypto.randomUUID(), // SQLite
 				game_id: action.game_id,
-				instance_id: action.instance_id,
-				user_id: action.user_id,
+				cardinstance_id: action.cardinstance_id,
+				player_id: action.player_id,
 				destination: action.destination
 			}
 		});
@@ -38,10 +41,11 @@ export const db = {
 	createCardInstance: function (action: DB.CardInstanceCreate) {
 		return prismaClient.cardInstance.create({
 			data: {
-				id: crypto.randomUUID(), // SQLite
-				card: 'cloboulon',
+				cardinstance_id: crypto.randomUUID(), // SQLite
+				card_id: action.card_id,
 				position: '2;2',
-				user_id: action.user_id
+				owner_id: action.owner_id,
+				game_id: action.game_id
 			}
 		});
 	}

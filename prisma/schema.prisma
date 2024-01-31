@@ -40,6 +40,7 @@ model Key {
   hashed_password String?
   user_id         String
   expires         BigInt?
+
   // FK
   auth_user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -49,8 +50,8 @@ model Key {
 model Game {
   game_id      String   @id @unique
   created_at   DateTime @default(now())
-  current_turn Int
-  game_status  String // waiting | ongoing | finished
+  current_turn Int @default(0)
+  game_status  String @default("Ongoing")// Waiting | Ongoing | Finished
 
   // FK
   player1_id String // Changed to String
@@ -84,7 +85,7 @@ model Card {
   stats   String
   moves   String
 
-  // Relations
+  // Relationships
   instances CardInstance[]
 }
 
@@ -111,6 +112,6 @@ model Message {
   content    String
   created_at DateTime @default(now())
 
-  // Relations
+  // Relationships
   author User @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
