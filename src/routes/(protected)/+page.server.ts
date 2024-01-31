@@ -1,8 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 
 import { auth } from '$lib/server/lucia';
-import { prismaClient } from '$lib/server/prisma.js';
-import { db } from '$lib/data/db.js';
+import db from '$lib/queries/index.js';
 
 export const load = async ({ parent }) => {
 	await parent();
@@ -19,15 +18,12 @@ export const actions = {
 	fight: async ({ request, locals }) => {
 		const formData = await request.formData();
 		const opponentName = formData.get('opponent') as string;
-		const opponent = await prismaClient.user.findFirst({
-			where: { username: opponentName },
-			select: { id: true }
-		});
+		const opponent = await db.users.getUserByUsername(opponentName);
 		if (!opponent) return;
 		const opponentId = opponent.id;
 		const challengerId = locals.user.userId;
 
-		const game = await db.createGame(opponentId, challengerId);
+		const game = await db.games.createGame(opponentId, challengerId);
 
 		const challengerDeck = [
 			'cloboulon',
@@ -47,14 +43,14 @@ export const actions = {
 		];
 
 		challengerDeck.map(async (card, idx) => {
-			const instance = await db.createCardInstance({
+			const instance = await db.cards.createCardInstance({
 				card_id: card,
 				game_id: game.game_id,
 				owner_id: challengerId,
 				position: '',
 				cardinstance_id: ''
 			});
-			await db.createAction({
+			await db.actions.createAction({
 				action_id: '',
 				cardinstance_id: instance.cardinstance_id,
 				destination: `${idx};1`,
@@ -63,14 +59,14 @@ export const actions = {
 			});
 		});
 		opponentDeck.map(async (card, idx) => {
-			const instance = await db.createCardInstance({
+			const instance = await db.cards.createCardInstance({
 				card_id: card,
 				game_id: game.game_id,
 				owner_id: opponentId,
 				position: '',
 				cardinstance_id: ''
 			});
-			await db.createAction({
+			await db.actions.createAction({
 				action_id: '',
 				cardinstance_id: instance.cardinstance_id,
 				destination: `${idx};4`,
