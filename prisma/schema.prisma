@@ -24,10 +24,11 @@ model User {
 
 model Session {
   id             String @id @unique
-  user_id        String
   active_expires BigInt
   idle_expires   BigInt
-  // Relations
+  // PK
+  user_id        String
+  // Relationships
   auth_user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
@@ -36,9 +37,10 @@ model Session {
 model Key {
   id              String  @id @unique
   hashed_password String?
-  user_id         String
   expires         BigInt?
   // FK
+  user_id         String
+  // Relationships
   auth_user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
@@ -50,18 +52,19 @@ model Game {
   current_turn Int            @default(0)
   game_status  String         @default("Ongoing") // Waiting | Ongoing | Finished
   // FK
-  player1_id   String // Changed to String
-  player2_id   String // Changed to String
+  player1_id   String
+  player2_id   String
   // Relationships
   player1      User           @relation("Player1", fields: [player1_id], references: [id])
   player2      User           @relation("Player2", fields: [player2_id], references: [id])
-  actions      Action[] // Added to represent actions related to the game
+  actions      Action[]
   cards        CardInstance[]
 }
 
 model Action {
   action_id       String       @id @unique
   created_at      DateTime     @default(now())
+  destination     String // "hand" | "cemetery" | "x;y"
   // FK
   game_id         String
   player_id       String
@@ -70,7 +73,6 @@ model Action {
   game            Game         @relation(fields: [game_id], references: [game_id])
   player          User         @relation(fields: [player_id], references: [id])
   card_instance   CardInstance @relation(fields: [cardinstance_id], references: [cardinstance_id])
-  destination     String // "hand" | "cemetery" | "x;y"
 }
 
 model Card {
@@ -92,8 +94,8 @@ model CardInstance {
   // Relationships
   card            Card     @relation(fields: [card_id], references: [card_id])
   game            Game     @relation(fields: [game_id], references: [game_id])
-  player          User     @relation(fields: [owner_id], references: [id])
-  Actions         Action[]
+  owner           User     @relation(fields: [owner_id], references: [id])
+  actions         Action[]
 }
 
 model Message {
