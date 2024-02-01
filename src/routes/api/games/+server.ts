@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { generatePositions } from '$lib/game';
 import { cardsOnBoard } from '$lib/data/mock';
-import { db } from '$lib/data/db.js';
+import db from '$lib/data/db';
 
 export async function POST({ locals }) {
 	// const idPlayer = 1;
@@ -9,7 +9,7 @@ export async function POST({ locals }) {
 
 	// const formData = await request.formData();
 	const opponentId = 'rtsq83ohie4jxyl';
-	const game = await db.createGame(opponentId, opponentId);
+	const game = await db.games.create(opponentId, opponentId);
 
 	// board = board.map((square) => {
 	// 	let squareContent: Game.CardInstance | undefined | null = cardsOnBoard.find(

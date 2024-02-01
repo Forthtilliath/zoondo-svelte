@@ -1,6 +1,6 @@
 import { type ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
-import { db } from '../lib/data/db';
+import db from '../lib/data/db';
 
 export default {
 	name: 'webSocketServer',
@@ -15,16 +15,16 @@ export default {
 			socket.on('joinRoom', async (room) => {
 				socket.join(room);
 
-				socket.emit('lastMessages', await db.getMessages(room));
+				socket.emit('lastMessages', await db.messages.getByRoom(room));
 
-				socket.on('message', async (content, user_id) => {
+				socket.on('message', async (content, author_id) => {
 					const msg: DB.MessageCreate = {
 						id: crypto.randomUUID(),
-						user_id,
+						author_id,
 						room,
 						content
 					};
-					const newMsg = await db.createMessage(msg);
+					const newMsg = await db.messages.create(msg);
 					io.to(room).emit('newMessage', newMsg);
 				});
 			});
