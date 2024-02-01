@@ -1,6 +1,6 @@
 import { prismaClient } from '../../server/prisma';
 
-export function create(p1: string, p2: string) {
+export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
 	return prismaClient.game.create({
 		data: {
 			game_id: crypto.randomUUID(), // SQLite
