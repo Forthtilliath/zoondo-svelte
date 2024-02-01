@@ -2,6 +2,7 @@
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
 	import Chat from '$lib/components/Chat.svelte';
+  import { page } from '$app/stores';
 
 	export let data;
 	$: ({
@@ -27,7 +28,7 @@
 			<CardSample />
 		</div>
 		<div class="Chat">
-			<Chat room="game#{board.board?.id}" {userId} />
+			<Chat room="game#{$page.params.id}" {userId} />
 		</div>
 	{:catch err}
 		<p>Error: {err.message}</p>
