@@ -8,11 +8,10 @@ datasource db {
 }
 
 model User {
-  id  String  @id @unique
-  username String  @unique
-  email    String  @unique
-  bio      String?
-
+  id         String         @id @unique
+  username   String         @unique
+  email      String         @unique
+  bio        String?
   // Relations
   Session    Session[]
   Key        Key[]
@@ -28,9 +27,8 @@ model Session {
   user_id        String
   active_expires BigInt
   idle_expires   BigInt
-
   // Relations
-  auth_user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  auth_user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -40,7 +38,6 @@ model Key {
   hashed_password String?
   user_id         String
   expires         BigInt?
-
   // FK
   auth_user       User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -48,61 +45,55 @@ model Key {
 }
 
 model Game {
-  game_id      String   @id @unique
-  created_at   DateTime @default(now())
-  current_turn Int @default(0)
-  game_status  String @default("Ongoing")// Waiting | Ongoing | Finished
-
+  game_id      String         @id @unique
+  created_at   DateTime       @default(now())
+  current_turn Int            @default(0)
+  game_status  String         @default("Ongoing") // Waiting | Ongoing | Finished
   // FK
-  player1_id String // Changed to String
-  player2_id String // Changed to String
-
+  player1_id   String // Changed to String
+  player2_id   String // Changed to String
   // Relationships
-  player1 User           @relation("Player1", fields: [player1_id], references: [id])
-  player2 User           @relation("Player2", fields: [player2_id], references: [id])
-  actions Action[] // Added to represent actions related to the game
-  cards   CardInstance[]
+  player1      User           @relation("Player1", fields: [player1_id], references: [id])
+  player2      User           @relation("Player2", fields: [player2_id], references: [id])
+  actions      Action[] // Added to represent actions related to the game
+  cards        CardInstance[]
 }
 
 model Action {
-  action_id String @id @unique
-
+  action_id       String       @id @unique
+  created_at      DateTime     @default(now())
   // FK
   game_id         String
   player_id       String
   cardinstance_id String
-
   // Relationships
-  game          Game         @relation(fields: [game_id], references: [game_id])
-  player        User         @relation(fields: [player_id], references: [id])
-  card_instance CardInstance @relation(fields: [cardinstance_id], references: [cardinstance_id])
-  destination   String // "hand" | "cemetery" | "x;y"
+  game            Game         @relation(fields: [game_id], references: [game_id])
+  player          User         @relation(fields: [player_id], references: [id])
+  card_instance   CardInstance @relation(fields: [cardinstance_id], references: [cardinstance_id])
+  destination     String // "hand" | "cemetery" | "x;y"
 }
 
 model Card {
-  card_id String @id @unique
-  name    String
-  stats   String
-  moves   String
-
+  card_id   String         @id @unique
+  name      String
+  stats     String
+  moves     String
   // Relationships
   instances CardInstance[]
 }
 
 model CardInstance {
-  cardinstance_id String @id @unique
+  cardinstance_id String   @id @unique
   position        String // "hand" | "cemetery" | "x;y"
-
   // FK
-  card_id  String 
-  game_id  String 
-  owner_id String 
-
+  card_id         String
+  game_id         String
+  owner_id        String
   // Relationships
-  card    Card     @relation(fields: [card_id], references: [card_id])
-  game    Game     @relation(fields: [game_id], references: [game_id])
-  player  User     @relation(fields: [owner_id], references: [id])
-  Actions Action[]
+  card            Card     @relation(fields: [card_id], references: [card_id])
+  game            Game     @relation(fields: [game_id], references: [game_id])
+  player          User     @relation(fields: [owner_id], references: [id])
+  Actions         Action[]
 }
 
 model Message {
@@ -111,7 +102,6 @@ model Message {
   author_id  String
   content    String
   created_at DateTime @default(now())
-
   // Relationships
-  author User @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author     User     @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
