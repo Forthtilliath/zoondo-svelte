@@ -19,3 +19,11 @@ export function get(game_id: string) {
 		include: { actions: true, cards: true }
 	});
 }
+
+//? NOTE this is only used for developement
+export function getLastId() {
+	return prismaClient.game.findFirst({
+		orderBy: { created_at: 'desc' },
+		select: { game_id: true }
+	});
+}

@@ -4,11 +4,14 @@
 
 	import Hotlinks from './(components)/Hotlinks.svelte';
 	import Toasts from './(components)/Toasts.svelte';
+
+	export let data;
+	$: ({ lastGameId } = data);
 </script>
 
 <div class="wrapper">
 	<header>
-		<Hotlinks />
+		<Hotlinks {lastGameId} />
 	</header>
 	<slot />
 	<Toasts />
