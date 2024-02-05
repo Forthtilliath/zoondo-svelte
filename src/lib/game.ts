@@ -52,6 +52,40 @@ export function movesToTransitions(
 	return transitions;
 }
 
-export function generateBoard() {
+export function generateBoard(rawData: DB.GameExtended) {
 	// TODO !
+	const { cards, actions } = rawData;
+	const positions = generatePositions(0, 5);
+	const board: Game.Square[] = [];
+
+	for (const action of actions) {
+		const card = cards.find((card) => card.cardinstance_id === action.cardinstance_id);
+		if (!card) continue;
+		card.position = action.destination;
+	}
+
+	for (const position of positions) {
+		const card = cards.find((card) => {
+			const [x, y] = card.position.split(';');
+			const cardPosition: Game.Position = { x: Number(x), y: Number(y) };
+
+			return JSON.stringify(position) === JSON.stringify(cardPosition);
+		});
+		board.push({
+			...position, // TOREFACTO
+			card: card
+				? {
+						corners: [0, 0, 0, 0],
+						moves: [],
+						name: '',
+						slug: '',
+						type: '',
+						value: 0
+					}
+				: null,
+			owner: card?.owner_id || null
+		});
+	}
+
+	return board;
 }

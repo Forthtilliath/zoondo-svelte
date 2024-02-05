@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {page} from '$app/stores'
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
 	import Chat from '$lib/components/Chat.svelte';
@@ -7,7 +8,6 @@
 	$: ({
 		user: { userId }
 	} = data);
-	console.log(data.board);
 	
 </script>
 
@@ -16,18 +16,17 @@
 </svelte:head>
 
 <main>
-	{#await data}
+	{#await data.board}
 		<p>Loading...</p>
 	{:then board} 
 		<div class="Board">
-			<!-- <Board board={data.board} /> -->
-			<p>Board loaded</p>
+			<Board board={board} />
 		</div>
 		<div class="CardSample">
 			<CardSample />
 		</div>
 		<div class="Chat">
-			<Chat room="game#{board.board?.id}" {userId} />
+			<Chat room="game#{$page.params.id}" {userId} />
 		</div>
 	{:catch err}
 		<p>Error: {err.message}</p>
