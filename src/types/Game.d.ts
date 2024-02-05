@@ -16,11 +16,11 @@ declare global {
 		};
 		type PlayerCard = {
 			card: Card;
-			owner: number;
+			owner: DB.User['id'];
 		};
 		type OpponentCard = {
 			card: null;
-			owner: number;
+			owner: DB.User['id'];
 		};
 		type CardInstance = OpponentCard | PlayerCard;
 
@@ -29,7 +29,7 @@ declare global {
 			y: number;
 		};
 
-		type Square = Position & CardInstance;
+		type Square = Position & CardInstance?;
 
 		type Board = Array<Square>;
 

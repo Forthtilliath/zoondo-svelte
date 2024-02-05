@@ -4,6 +4,7 @@ declare global {
 	namespace DB {
 		type User = Prisma.UserGetPayload<object>;
 		type Game = Prisma.GameGetPayload<object>;
+		type Action = Prisma.ActionGetPayload<object>;
 
 		type Message = Prisma.MessageGetPayload<object>;
 		type MessageCreate = Prisma.MessageUncheckedCreateInput;
@@ -12,6 +13,13 @@ declare global {
 		type ActionCreate = Prisma.ActionUncheckedCreateInput;
 
 		type CardInstanceCreate = Prisma.CardInstanceUncheckedCreateInput;
+
+		type GameExtended = Prisma.GameGetPayload<{
+			include: {
+				actions: true;
+				cards: true;
+			};
+		}>;
 	}
 }
 export {};

@@ -76,7 +76,7 @@ model Action {
   game          Game         @relation(fields: [game_id], references: [game_id])
   player        User         @relation(fields: [player_id], references: [id])
   card_instance CardInstance @relation(fields: [cardinstance_id], references: [cardinstance_id])
-  destination   String // "hand" | "cemetery" | "x;y"
+  destination   String // "hand" | "graveyard" | "x;y"
 }
 
 model Card {
@@ -91,7 +91,7 @@ model Card {
 
 model CardInstance {
   cardinstance_id String @id @unique
-  position        String // "hand" | "cemetery" | "x;y"
+  position        String // "hand" | "graveyard" | "x;y"
 
   // FK
   card_id  String 
