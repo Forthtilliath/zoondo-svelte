@@ -19,15 +19,17 @@
 	{#await data.board}
 		<p>Loading...</p>
 	{:then board} 
-		<div class="Board">
-			<Board board={board} />
-		</div>
-		<div class="CardSample">
-			<CardSample />
-		</div>
-		<div class="Chat">
-			<Chat room="game#{$page.params.id}" {userId} />
-		</div>
+		{#if board}
+			<div class="Board">
+				<Board {board} {userId}/>
+			</div>
+			<div class="CardSample">
+				<CardSample />
+			</div>
+			<div class="Chat">
+				<Chat room="game#{$page.params.id}" {userId} />
+			</div>
+		{/if}
 	{:catch err}
 		<p>Error: {err.message}</p>
 	{/await}

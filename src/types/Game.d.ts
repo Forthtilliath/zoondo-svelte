@@ -22,14 +22,18 @@ declare global {
 			card: null;
 			owner: DB.User['id'];
 		};
-		type CardInstance = OpponentCard | PlayerCard;
+		type NoCard = {
+			card: null;
+			owner: null;
+		};
+		type CardInstance = OpponentCard | PlayerCard | NoCard;
 
 		type Position = {
 			x: number;
 			y: number;
 		};
 
-		type Square = Position & CardInstance?;
+		type Square = Position & CardInstance;
 
 		type Board = Array<Square>;
 

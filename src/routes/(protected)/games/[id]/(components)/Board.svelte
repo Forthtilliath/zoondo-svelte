@@ -4,6 +4,7 @@
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 
 	export let board: Game.Board;
+	export let userId: string;
 
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
@@ -28,10 +29,12 @@
 			role="gridcell"
 			tabindex="0"
 		>
-			{#if square.card === null}
-				<CardTokenOpponent />
-			{:else if square.card}
-				<CardTokenPlayer card={square.card} id={`card-${id}`} />
+			{#if square.card}
+				{#if square.owner===userId}
+					<CardTokenPlayer card={square.card} id={`card-${id}`} />
+				{:else}
+					<CardTokenOpponent />
+				{/if}
 			{/if}
 			<span>{square.x}-{square.y}</span>
 		</div>

@@ -53,7 +53,6 @@ export function movesToTransitions(
 }
 
 export function generateBoard(rawData: DB.GameExtended) {
-	// TODO !
 	const { cards, actions } = rawData;
 	const positions = generatePositions(0, 5);
 	const board: Game.Square[] = [];
@@ -71,19 +70,28 @@ export function generateBoard(rawData: DB.GameExtended) {
 
 			return JSON.stringify(position) === JSON.stringify(cardPosition);
 		});
+		let squareContent: Game.CardInstance;
+		if (!card)
+			squareContent = {
+				card: null,
+				owner: null
+			};
+		else {
+			squareContent = {
+				card: {
+					corners: [0, 0, 0, 0],
+					moves: [],
+					name: '',
+					slug: '',
+					type: '',
+					value: 0
+				},
+				owner: card.owner_id
+			};
+		}
 		board.push({
-			...position, // TOREFACTO
-			card: card
-				? {
-						corners: [0, 0, 0, 0],
-						moves: [],
-						name: '',
-						slug: '',
-						type: '',
-						value: 0
-					}
-				: null,
-			owner: card?.owner_id || null
+			...position,
+			...squareContent
 		});
 	}
 
