@@ -26,17 +26,17 @@ export const actions = {
 
 		const challengerDeck = [
 			'cloboulon',
-			'cloboulon',
-			'cloboulon',
-			'cloboulon',
+			'gold-hure',
+			'bouclefeuille',
+			'grognard:0',
 			'cloboulon',
 			'cloboulon'
 		];
 		const opponentDeck = [
 			'cloboulon',
-			'cloboulon',
-			'cloboulon',
-			'cloboulon',
+			'gold-hure',
+			'bouclefeuille',
+			'grognard:0',
 			'cloboulon',
 			'cloboulon'
 		];

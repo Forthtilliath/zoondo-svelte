@@ -8,7 +8,6 @@
 	$: ({
 		user: { userId }
 	} = data);
-	
 </script>
 
 <svelte:head>
@@ -26,10 +25,10 @@
 			<div class="CardSample">
 				<CardSample />
 			</div>
-			<div class="Chat">
-				<Chat room="game#{$page.params.id}" {userId} />
-			</div>
 		{/if}
+		<div class="Chat">
+			<Chat room="game#{$page.params.id}" {userId} />
+		</div>
 	{:catch err}
 		<p>Error: {err.message}</p>
 	{/await}

@@ -9,13 +9,15 @@ export function create(p1: string, p2: string) {
 			current_turn: 0,
 			game_status: 'ongoing'
 		}
-		//select: { Players: true }
 	});
 }
 
 export function get(game_id: string) {
 	return prismaClient.game.findFirst({
 		where: { game_id },
-		include: { actions: true, cards: true }
+		include: {
+			actions: true,
+			cards: true
+		}
 	});
 }

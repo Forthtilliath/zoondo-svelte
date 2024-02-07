@@ -1,3 +1,5 @@
+import { availableCards } from './data/mock';
+
 export function generatePositions(min: number, max: number): Game.Position[] {
 	const positions: Array<Game.Position> = [];
 
@@ -70,6 +72,7 @@ export function generateBoard(rawData: DB.GameExtended) {
 
 			return JSON.stringify(position) === JSON.stringify(cardPosition);
 		});
+
 		let squareContent: Game.CardInstance;
 		if (!card)
 			squareContent = {
@@ -77,15 +80,11 @@ export function generateBoard(rawData: DB.GameExtended) {
 				owner: null
 			};
 		else {
+			const cardData = availableCards[card.card_id];
+			delete cardData.resolver;
+
 			squareContent = {
-				card: {
-					corners: [0, 0, 0, 0],
-					moves: [],
-					name: '',
-					slug: '',
-					type: '',
-					value: 0
-				},
+				card: cardData,
 				owner: card.owner_id
 			};
 		}

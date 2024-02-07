@@ -79,16 +79,6 @@ model Action {
   destination   String // "hand" | "graveyard" | "x;y"
 }
 
-model Card {
-  card_id String @id @unique
-  name    String
-  stats   String
-  moves   String
-
-  // Relationships
-  instances CardInstance[]
-}
-
 model CardInstance {
   cardinstance_id String @id @unique
   position        String // "hand" | "graveyard" | "x;y"
@@ -99,7 +89,6 @@ model CardInstance {
   owner_id String 
 
   // Relationships
-  card    Card     @relation(fields: [card_id], references: [card_id])
   game    Game     @relation(fields: [game_id], references: [game_id])
   player  User     @relation(fields: [owner_id], references: [id])
   Actions Action[]
