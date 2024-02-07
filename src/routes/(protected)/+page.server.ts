@@ -41,39 +41,43 @@ export const actions = {
 			'cloboulon'
 		];
 
-		challengerDeck.map(async (card, idx) => {
-			const instance = await db.cardInstances.create({
-				card_id: card,
-				game_id: game.game_id,
-				owner_id: challengerId,
-				position: '',
-				cardinstance_id: ''
-			});
-			await db.actions.create({
-				action_id: '',
-				cardinstance_id: instance.cardinstance_id,
-				destination: `${idx};1`,
-				game_id: game.game_id,
-				player_id: challengerId
-			});
-		});
-		opponentDeck.map(async (card, idx) => {
-			const instance = await db.cardInstances.create({
-				card_id: card,
-				game_id: game.game_id,
-				owner_id: opponentId,
-				position: '',
-				cardinstance_id: ''
-			});
-			await db.actions.create({
-				action_id: '',
-				cardinstance_id: instance.cardinstance_id,
-				destination: `${idx};4`,
-				game_id: game.game_id,
-				player_id: opponentId
-			});
-		});
-
+		const promises = [
+			...challengerDeck.map((card, idx) => {
+				return db.cardInstances.create({
+					cardinstance_id: crypto.randomUUID(),
+					card_id: card,
+					game_id: game.game_id,
+					owner_id: challengerId,
+					position: '',
+					Actions: {
+						create: {
+							action_id: crypto.randomUUID(),
+							destination: `${idx};1`,
+							game_id: game.game_id,
+							player_id: challengerId
+						}
+					}
+				});
+			}),
+			...opponentDeck.map((card, idx) => {
+				return db.cardInstances.create({
+					cardinstance_id: crypto.randomUUID(),
+					card_id: card,
+					game_id: game.game_id,
+					owner_id: opponentId,
+					position: '',
+					Actions: {
+						create: {
+							action_id: crypto.randomUUID(),
+							destination: `${idx};4`,
+							game_id: game.game_id,
+							player_id: opponentId
+						}
+					}
+				});
+			})
+		];
+		await Promise.all(promises).catch((err) => err.json());
 		throw redirect(302, `/games/${game.game_id}`);
 	}
 };
