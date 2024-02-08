@@ -2,18 +2,32 @@
 	import { addToast } from '$lib/stores/toast';
 	import CardTokenOpponent from './CardTokenOpponent.svelte';
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
+	import { subscribeSocket } from '$lib/methods/subscribeSocket';
+	import {page} from '$app/stores'
 
 	export let board: Game.Board;
 	export let userId: string;
+	export let room = 'waiting';
+
+	const { socket, messages } = subscribeSocket(room);
 
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
 
+		const cardinstance_id = evt.dataTransfer.getData('cardId');
+		
 		const cardId = evt.dataTransfer.getData('cardId');
-
 		const coords = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;
 
-		addToast({ msg: `Dropped ${cardId} into ${coords}`, type: 'notice' });
+		addToast({ msg: `Tried to drop ${cardId} into ${coords}`, type: 'notice' });
+		const newAction: DB.Action = {
+			action_id:"",
+			cardinstance_id: cardinstance_id,
+			destination: coords,
+			game_id: $page.params.id,
+			player_id: userId
+		}
+		socket.emit("gameAction",newAction);
 	}
 </script>
 
@@ -31,7 +45,7 @@
 		>
 			{#if square.card}
 				{#if square.owner===userId}
-					<CardTokenPlayer card={square.card} id={`card-${id}`} />
+					<CardTokenPlayer card={square} id={ square.instanceid} />
 				{:else}
 					<CardTokenOpponent />
 				{/if}

@@ -20,7 +20,7 @@
 	{:then board} 
 		{#if board}
 			<div class="Board">
-				<Board {board} {userId}/>
+				<Board {board} {userId} room="game#{$page.params.id}"/>
 			</div>
 			<div class="CardSample">
 				<CardSample />

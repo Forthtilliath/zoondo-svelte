@@ -85,7 +85,8 @@ export function generateBoard(rawData: DB.GameExtended) {
 
 			squareContent = {
 				card: cardData,
-				owner: card.owner_id
+				owner: card.owner_id,
+				instanceid: card.cardinstance_id
 			};
 		}
 		board.push({

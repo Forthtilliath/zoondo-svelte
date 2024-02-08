@@ -18,6 +18,12 @@ export function subscribeSocket(room = 'waiting') {
 	socket.on('newMessage', (msg) => {
 		messages.update((m) => [...m, msg]);
 	});
+	socket.on('newAction', (act) => {
+		addToast({
+			msg: `Succesfully dropped ${act.cardinstance_id} into ${act.destination}`,
+			type: 'notice'
+		});
+	});
 
 	return { socket, messages };
 }

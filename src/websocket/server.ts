@@ -27,6 +27,16 @@ export default {
 					const newMsg = await db.messages.create(msg);
 					io.to(room).emit('newMessage', newMsg);
 				});
+
+				socket.on('gameAction', async (action) => {
+					//TODO Validation de l'action
+					const act: DB.ActionCreate = { ...action, action_id: crypto.randomUUID() };
+					const newAct = await db.actions.create(act).catch((err) => {
+						console.error(err);
+					});
+					if (!newAct) return;
+					io.to(room).emit('newAction', newAct);
+				});
 			});
 		});
 	}
