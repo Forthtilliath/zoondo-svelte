@@ -11,3 +11,11 @@ export function create(action: DB.ActionCreate) {
 		}
 	});
 }
+
+export function getLastAction(game_id: DB.Action['game_id']) {
+	return prismaClient.action.findMany({
+		where: { game_id },
+		orderBy: { created_at: 'desc' },
+		take: 1
+	});
+}

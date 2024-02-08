@@ -3,7 +3,7 @@
 	import CardTokenOpponent from './CardTokenOpponent.svelte';
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 
-	export let board: Game.Board;
+	export let board: Game.Square[];
 
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;

@@ -7,7 +7,7 @@ export function GET() {
 	let board: Array<Game.Position> = generatePositions(0, 5);
 
 	board = board.map((square) => {
-		let squareContent: Game.CardInstance | undefined | null = cardsOnBoard.find(
+		let squareContent: Game.SquareContent | undefined | null = cardsOnBoard.find(
 			(candidate) => candidate.x === square.x && candidate.y === square.y
 		);
 		if (squareContent && squareContent.owner !== idPlayer) {

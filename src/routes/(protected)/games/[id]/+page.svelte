@@ -2,14 +2,13 @@
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
 	import Chat from '$lib/components/Chat.svelte';
-  import { page } from '$app/stores';
+	import { page } from '$app/stores';
 
 	export let data;
 	$: ({
 		user: { userId }
 	} = data);
-	console.log(data.board);
-	
+	$: (async () => console.log(await data.board))();
 </script>
 
 <svelte:head>
@@ -17,19 +16,22 @@
 </svelte:head>
 
 <main>
-	{#await data}
+	{#await data.board}
 		<p>Loading...</p>
-	{:then board} 
-		<div class="Board">
-			<!-- <Board board={data.board} /> -->
-			<p>Board loaded</p>
-		</div>
-		<div class="CardSample">
-			<CardSample />
-		</div>
-		<div class="Chat">
-			<Chat room="game#{$page.params.id}" {userId} />
-		</div>
+	{:then board}
+		{#if board}
+			<div class="Board">
+				<Board {board} />
+			</div>
+			<div class="CardSample">
+				<CardSample />
+			</div>
+			<div class="Chat">
+				<Chat room="game#{$page.params.id}" {userId} />
+			</div>
+		{:else}
+			<p>No board found</p>
+		{/if}
 	{:catch err}
 		<p>Error: {err.message}</p>
 	{/await}

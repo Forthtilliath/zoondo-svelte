@@ -15,23 +15,26 @@ declare global {
 			resolver?: () => void;
 		};
 		type PlayerCard = {
-			card: Card;
+			// card: Card;
+			card: DB.CardInstance;
 			owner: number;
 		};
 		type OpponentCard = {
 			card: null;
 			owner: number;
 		};
-		type CardInstance = OpponentCard | PlayerCard;
+		type NoCard = {
+			card: null;
+		};
+		type SquareContent = OpponentCard | PlayerCard | NoCard;
 
 		type Position = {
 			x: number;
 			y: number;
 		};
 
-		type Square = Position & CardInstance;
-
-		type Board = Array<Square>;
+		type Square = Position & SquareContent;
+		// type Board = Array<BoardSquare>;
 
 		type Transition = [Position, Position];
 	}

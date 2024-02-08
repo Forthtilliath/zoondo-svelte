@@ -1,9 +1,9 @@
-import db from '$lib/data/db';
+import { generateBoard } from '$lib/methods/generateBoard.js';
 
 export const load = async ({ params, parent }) => {
 	await parent();
 
 	return {
-		board: await db.games.get(params.id)
+		board: generateBoard(params.id)
 	};
 };
