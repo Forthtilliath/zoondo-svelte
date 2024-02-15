@@ -1,7 +1,5 @@
 import { writable, get } from 'svelte/store';
 
-// export const currentFocus = writable<Game.Card | null>(null);
-
 type PlayerOne = 0;
 type PlayerTwo = 1;
 type GameStore = {
