@@ -9,7 +9,7 @@
 	export let userId: string;
 	export let room = 'waiting';
 
-	const { socket, messages } = subscribeSocket(room);
+	const { socket } = subscribeSocket(room);
 
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
