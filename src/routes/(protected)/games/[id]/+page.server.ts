@@ -4,7 +4,7 @@ import { fail } from '@sveltejs/kit';
 
 export const load = async ({ params, parent }) => {
 	await parent();
-	const rawData = await db.games.get(params.id);
+	const rawData = await db.games.getExtended(params.id);
 	if (!rawData) return fail(404);
 
 	const board: Game.Square[] = generateBoard(rawData);

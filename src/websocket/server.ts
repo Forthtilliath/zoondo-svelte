@@ -1,6 +1,7 @@
 import { type ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
 import db from '../lib/data/db';
+import { generateBoard } from '../lib/game';
 
 export default {
 	name: 'webSocketServer',
@@ -28,14 +29,23 @@ export default {
 					io.to(room).emit('newMessage', newMsg);
 				});
 
-				socket.on('gameAction', async (action) => {
+				socket.on('pushAction', async (action) => {
 					//TODO Validation de l'action
 					const act: DB.ActionCreate = { ...action, action_id: crypto.randomUUID() };
 					const newAct = await db.actions.create(act).catch((err) => {
 						console.error(err);
 					});
 					if (!newAct) return;
-					io.to(room).emit('newAction', newAct);
+
+					const gameData = await db.games.getExtended(action.game_id);
+					if (gameData) {
+						const board = generateBoard(gameData);
+
+						io.to(room).emit('syncAction', {
+							board,
+							nextActionRestrictions: null
+						});
+					}
 				});
 			});
 		});

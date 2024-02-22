@@ -3,13 +3,19 @@ declare global {
 		serverNotice: (msg: string) => void;
 		lastMessages: (messages: Array<DB.Message>) => void;
 		newMessage: (msg: DB.Message) => void;
-		newAction: (act: DB.Action) => void;
+		syncAction: ({
+			board,
+			nextActionRestrictions
+		}: {
+			board: Game.Board;
+			nextActionRestrictions: object | null;
+		}) => void;
 	}
 
 	interface ClientToServerEvents {
 		joinRoom: (room: string) => void;
 		message: (content: string, author_id: string) => void;
-		gameAction: (action: DB.Action) => void;
+		pushAction: (action: DB.Action) => void;
 	}
 }
 

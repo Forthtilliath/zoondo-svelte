@@ -12,7 +12,7 @@ export function create(p1: string, p2: string) {
 	});
 }
 
-export function get(game_id: string) {
+export function getExtended(game_id: string) {
 	return prismaClient.game.findFirst({
 		where: { game_id },
 		include: {

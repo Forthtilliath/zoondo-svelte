@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { addToast } from '$lib/stores/toast';
 	import CardTokenOpponent from './CardTokenOpponent.svelte';
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 	import { subscribeSocket } from '$lib/methods/subscribeSocket';
-	import {page} from '$app/stores'
+	import { page } from '$app/stores'
+	import { currentBoard } from '$lib/stores/game';
+	import { onMount } from 'svelte';
 
 	export let board: Game.Board;
 	export let userId: string;
 	export let room = 'waiting';
+
+	onMount(()=>{
+		currentBoard.set(board);
+	})
 
 	const { socket } = subscribeSocket(room);
 
@@ -15,11 +20,10 @@
 		if (!evt.dataTransfer) return;
 
 		const cardinstance_id = evt.dataTransfer.getData('cardId');
-		
+
 		const cardId = evt.dataTransfer.getData('cardId');
 		const coords = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;
 
-		addToast({ msg: `Tried to drop ${cardId} into ${coords}`, type: 'notice' });
 		const newAction: DB.Action = {
 			action_id:"",
 			cardinstance_id: cardinstance_id,
@@ -27,12 +31,12 @@
 			game_id: $page.params.id,
 			player_id: userId
 		}
-		socket.emit("gameAction",newAction);
+		socket.emit("pushAction",newAction);
 	}
 </script>
 
 <div class="wrapper">
-	{#each board as square, id}
+	{#each $currentBoard as square}
 		<div
 			class="square"
 			on:drop|preventDefault={hDragDrop}
@@ -42,10 +46,10 @@
 			aria-dropeffect="move"
 			role="gridcell"
 			tabindex="0"
-		>
+			>
 			{#if square.card}
 				{#if square.owner===userId}
-					<CardTokenPlayer card={square} id={ square.instanceid} />
+					<CardTokenPlayer cardInstance={square}/>
 				{:else}
 					<CardTokenOpponent />
 				{/if}

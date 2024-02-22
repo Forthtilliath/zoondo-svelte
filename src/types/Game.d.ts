@@ -22,6 +22,7 @@ declare global {
 		type OpponentCard = {
 			card: null;
 			owner: DB.User['id'];
+			instanceid: string;
 		};
 		type NoCard = {
 			card: null;
