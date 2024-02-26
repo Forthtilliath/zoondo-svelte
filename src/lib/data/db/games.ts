@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prismaClient } from '../../server/prisma';
 
 export function create(p1: string, p2: string) {
@@ -18,6 +19,18 @@ export function getExtended(game_id: string) {
 		include: {
 			actions: true,
 			cards: true
+		}
+	});
+}
+
+export function getExtendedBy(criteria: Prisma.GameWhereInput) {
+	return prismaClient.game.findMany({
+		where: criteria,
+		include: {
+			actions: true,
+			cards: true,
+			player1: true,
+			player2: true
 		}
 	});
 }

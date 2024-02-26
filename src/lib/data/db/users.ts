@@ -5,3 +5,7 @@ export function getByName(username: string) {
 		where: { username }
 	});
 }
+
+export function getAll() {
+	return prismaClient.user.findMany();
+}

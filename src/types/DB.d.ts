@@ -18,6 +18,8 @@ declare global {
 			include: {
 				actions: true;
 				cards: true;
+				player1: true;
+				player2: true;
 			};
 		}>;
 	}
