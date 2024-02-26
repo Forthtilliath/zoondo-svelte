@@ -2,8 +2,18 @@ import { redirect, fail } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
 import db from '$lib/data/db';
 
-export const load = async ({ parent }) => {
+export const load = async ({ parent, locals }) => {
 	await parent();
+	const userId = locals.user.userId;
+	const currentGames = await db.games.getExtendedBy({
+		OR: [{ player1_id: userId }, { player2_id: userId }]
+	});
+	const users: DB.User[] = await db.users.getAll();
+
+	return {
+		currentGames,
+		users
+	};
 };
 
 export const actions = {

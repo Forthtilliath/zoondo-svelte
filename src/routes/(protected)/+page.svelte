@@ -4,7 +4,7 @@
 
 	export let data;
 
-	$: user = data.user;
+	$: ({user, users, currentGames} = data);
 </script>
 
 <h1>Profile</h1>
@@ -19,12 +19,25 @@
 
 <form method="post" action="?/fight" use:enhance>
 	<label>Choose a challenger:
-		<input list="opponent-candidates" name="opponent" type="search"/>
+		<input list="opponent-candidates" name="opponent" type="search" autocomplete="off"/>
 	</label>
 	<datalist id="opponent-candidates">
-		<option value="ValhallaCode"></option>
-		<option value="Forth"></option>
-		<option value="Guillaume37"></option>
+		{#each users as opponent}
+			{#if opponent.username !== user.username}
+				<option value={opponent.username}></option>
+			{/if}
+		{/each}
 	</datalist>
 	<input type="submit" value="Fight!" />
 </form>
+
+<h2>My Games</h2>
+<ul>
+	{#each currentGames as game}
+	{#if game.player1_id===user.userId}
+		<li><a href={`/games/${game.game_id}`}>vs {game.player2.username}</a></li>
+	{:else}
+		<li><a href={`/games/${game.game_id}`}>vs {game.player1.username}</a></li>
+	{/if}
+	{/each}
+</ul>
