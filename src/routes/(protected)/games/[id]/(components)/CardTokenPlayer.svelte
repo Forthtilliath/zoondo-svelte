@@ -4,15 +4,13 @@
 	export let cardInstance: Game.Position & Game.PlayerCard;
 
 	function setCurrentFocus() {
-		currentFocus.set(cardInstance.card);
+		currentFocus.set(cardInstance);
 	}
 
 	function hDragStart(evt: DragEvent) {
 		if (!evt.dataTransfer) return;
 
 		evt.dataTransfer.dropEffect = 'move';
-		evt.dataTransfer.setData('cardId', cardInstance.instanceid);
-		evt.dataTransfer.setData('card', JSON.stringify(cardInstance));
 	}
 </script>
 

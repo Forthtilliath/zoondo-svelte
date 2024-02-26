@@ -3,12 +3,21 @@
 	import CardTokenPlayer from './CardTokenPlayer.svelte';
 	import { subscribeSocket } from '$lib/methods/subscribeSocket';
 	import { page } from '$app/stores'
-	import { currentBoard } from '$lib/stores/game';
+	import { currentBoard, currentFocus } from '$lib/stores/game';
 	import { onMount } from 'svelte';
 
 	export let board: Game.Board;
 	export let userId: string;
 	export let room = 'waiting';
+	let dropTargets: Game.Move[]=[];
+
+	$: {
+		if($currentFocus?.card) {
+			const {x,y} = $currentFocus;
+			const token = $currentFocus.card
+			dropTargets =token.moves.flat().map(move=>[move[0]+x, move[1]+y])
+		}
+	}
 
 	onMount(()=>{
 		currentBoard.set(board);
@@ -19,19 +28,22 @@
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
 
-		const cardinstance_id = evt.dataTransfer.getData('cardId');
-
-		const cardId = evt.dataTransfer.getData('cardId');
-		const coords = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;
-
-		const newAction: DB.Action = {
-			action_id:"",
-			cardinstance_id: cardinstance_id,
-			destination: coords,
-			game_id: $page.params.id,
-			player_id: userId
+		if(!evt.currentTarget.classList.contains("targettable")){
+			return;
 		}
-		socket.emit("pushAction",newAction);
+
+		const coordsDst = `${evt.currentTarget.dataset.x};${evt.currentTarget.dataset.y}`;
+
+		if($currentFocus && 'instanceid' in $currentFocus){
+			const newAction: DB.Action = {
+				action_id:"",
+				cardinstance_id: $currentFocus?.instanceid,
+				destination: coordsDst,
+				game_id: $page.params.id,
+				player_id: userId
+			}
+			socket.emit("pushAction",newAction);
+		}
 	}
 </script>
 
@@ -39,6 +51,7 @@
 	{#each $currentBoard as square}
 		<div
 			class="square"
+			class:targettable={ dropTargets.some(target=>target[0]===square.x && target[1]=== square.y) }
 			on:drop|preventDefault={hDragDrop}
 			on:dragover|preventDefault
 			data-x={square.x}
@@ -70,6 +83,9 @@
 		background-image: url('/assets/board.webp');
 		background-size: cover;
 	}
+	.targettable{
+		background-color: rgba(200,200,0,.2);
+	}
 	.square {
 		width: calc(100% / $gameSquaresX);
 		aspect-ratio: 1;
@@ -80,6 +96,7 @@
 		align-items: center;
 
 		position: relative;
+
 
 		span {
 			position: absolute;
