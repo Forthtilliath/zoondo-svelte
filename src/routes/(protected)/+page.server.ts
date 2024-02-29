@@ -5,14 +5,14 @@ import db from '$lib/data/db';
 export const load = async ({ parent, locals }) => {
 	await parent();
 	const userId = locals.user.userId;
-	const currentGames = await db.games.getExtendedBy({
+	const currentGamesPromise = db.games.getExtendedBy({
 		OR: [{ player1_id: userId }, { player2_id: userId }]
 	});
-	const users: DB.User[] = await db.users.getAll();
+	const usersPromise = db.users.getAll();
 
 	return {
-		currentGames,
-		users
+		currentGamesPromise,
+		usersPromise
 	};
 };
 
