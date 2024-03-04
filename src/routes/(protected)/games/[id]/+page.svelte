@@ -6,7 +6,8 @@
 
 	export let data;
 	$: ({
-		user: { userId }
+		user: { userId },
+		isFirstPlayer
 	} = data);
 </script>
 
@@ -20,7 +21,7 @@
 	{:then board} 
 		{#if board}
 			<div class="Board">
-				<Board {board} {userId} room="game#{$page.params.id}"/>
+				<Board {board} {userId} room="game#{$page.params.id}" {isFirstPlayer}/>
 			</div>
 			<div class="CardSample">
 				<CardSample />

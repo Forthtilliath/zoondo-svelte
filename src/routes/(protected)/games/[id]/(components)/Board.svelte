@@ -8,6 +8,7 @@
 
 	export let board: Game.Board;
 	export let userId: string;
+	export let isFirstPlayer: boolean|undefined; // TODO refacto
 	export let room = 'waiting';
 	let dropTargets: Game.Move[]=[];
 
@@ -15,12 +16,20 @@
 		if($currentFocus?.card) {
 			const {x,y} = $currentFocus;
 			const token = $currentFocus.card
-			dropTargets =token.moves.flat().map(move=>[move[0]+x, move[1]+y])
+			// if(!isFirstPlayer) {
+				dropTargets =token.moves.flat().map(move=>[move[0]+x, move[1]+y])
+			// } else {
+			// 	dropTargets =token.moves.flat().map(move=>[-move[0]+x, -move[1]+y])
+			// }
 		}
 	}
 
 	onMount(()=>{
-		currentBoard.set(board);
+		if(!isFirstPlayer) {
+			currentBoard.set(board);
+		} else {
+			currentBoard.set(board.reverse());
+		}
 	})
 
 	const { socket } = subscribeSocket(room);

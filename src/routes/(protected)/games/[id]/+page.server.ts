@@ -2,7 +2,7 @@ import db from '$lib/data/db';
 import { generateBoard } from '$lib/game.js';
 import { fail } from '@sveltejs/kit';
 
-export const load = async ({ params, parent }) => {
+export const load = async ({ params, parent, locals }) => {
 	await parent();
 	const rawData = await db.games.getExtended(params.id);
 	if (!rawData) return fail(404);
@@ -11,6 +11,7 @@ export const load = async ({ params, parent }) => {
 	// TODO obfuscation selon le user
 
 	return {
-		board
+		board,
+		isFirstPlayer: locals.user.userId === rawData.player1_id
 	};
 };
