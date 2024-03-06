@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '$styles/core/reset.scss';
 	import '$styles/core/base.scss';
-	import "../app.css";
-	
+	import '../app.css';
+
 	import Hotlinks from './(components)/Hotlinks.svelte';
 	import Toasts from './(components)/Toasts.svelte';
 </script>

@@ -1,3 +1,3 @@
 <nav class="flex gap-8">
-	<a href="/" class="no-underline text-inherit">Next Template</a>
+	<a href="/" class="text-inherit no-underline">Next Template</a>
 </nav>

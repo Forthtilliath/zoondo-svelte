@@ -3,7 +3,7 @@
 	import { generatePositions, movesToTransitions } from '$lib/game';
 	let squares = generatePositions(-2, 2);
 
-	$: cardFocused = $currentFocus?.card
+	$: cardFocused = $currentFocus?.card;
 </script>
 
 <div class="card">
@@ -35,11 +35,7 @@
 		</div>
 		<img src={`/assets/types/${cardFocused.type}.webp`} alt={cardFocused.type} class="type" />
 		<div class="value">{cardFocused.value}</div>
-		<img
-			src={`/assets/tribes/${cardFocused.slug}.webp`}
-			alt={cardFocused.slug}
-			class="picture"
-		/>
+		<img src={`/assets/tribes/${cardFocused.slug}.webp`} alt={cardFocused.slug} class="picture" />
 		<div class="name">{cardFocused.name}</div>
 		{#if cardFocused.power}
 			<div class="power">{`Special: ${cardFocused.power}`}</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {page} from '$app/stores'
+	import { page } from '$app/stores';
 	import Board from './(components)/Board.svelte';
 	import CardSample from './(components)/CardSample.svelte';
 	import Chat from '$lib/components/Chat.svelte';
@@ -18,10 +18,10 @@
 <main>
 	{#await data.board}
 		<p>Loading...</p>
-	{:then board} 
+	{:then board}
 		{#if board}
 			<div class="Board">
-				<Board {board} {userId} room="game#{$page.params.id}" {isFirstPlayer}/>
+				<Board {board} {userId} room="game#{$page.params.id}" {isFirstPlayer} />
 			</div>
 			<div class="CardSample">
 				<CardSample />
