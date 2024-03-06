@@ -1,38 +1,38 @@
 @use '../abstracts/variables.module' as *;
 
 html {
-	color-scheme: light dark;
+  color-scheme: light dark;
 }
 
 body {
-	font-family: system-ui;
-	font-size: 1.125rem;
-	line-height: 1.2;
+  font-family: system-ui;
+  font-size: 1.125rem;
+  line-height: 1.2;
 
-	background-color: $baseColor;
-	color: $fontColor;
+  background-color: $baseColor;
+  color: $fontColor;
 }
 
 img,
 svg,
 video {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 
 h2 {
-	font-size: 2rem;
+  font-size: 2rem;
 }
 
 // Labels accessibles mais invisibles
 .sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
