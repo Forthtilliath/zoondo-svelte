@@ -5,6 +5,7 @@
 	import { page } from '$app/stores'
 	import { currentBoard, currentFocus } from '$lib/stores/game';
 	import { onMount } from 'svelte';
+	import { cn } from '$lib/methods/cn';
 
 	export let board: Game.Board;
 	export let userId: string;
@@ -37,7 +38,7 @@
 	function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
 		if (!evt.dataTransfer) return;
 
-		if(!evt.currentTarget.classList.contains("targettable")){
+		if(!evt.currentTarget.dataset.targettable){
 			return;
 		}
 
@@ -56,15 +57,16 @@
 	}
 </script>
 
-<div class="wrapper">
+<div class="flex flex-row flex-wrap w-full h-full bg-cover bg-[url('/assets/board.webp')]">
 	{#each $currentBoard as square}
+		{@const targettable = dropTargets.some(target=>target[0]===square.x && target[1]=== square.y)}
 		<div
-			class="square"
-			class:targettable={ dropTargets.some(target=>target[0]===square.x && target[1]=== square.y) }
+			class={cn("w-[calc(100%/6)] aspect-square border border-solid border-slate-900 box-border flex justify-center items-center relative", targettable && "bg-yellow-500/50")}
 			on:drop|preventDefault={hDragDrop}
 			on:dragover|preventDefault
 			data-x={square.x}
 			data-y={square.y}
+			data-targettable={targettable}
 			aria-dropeffect="move"
 			role="gridcell"
 			tabindex="0"
@@ -76,43 +78,7 @@
 					<CardTokenOpponent />
 				{/if}
 			{/if}
-			<span>{square.x}-{square.y}</span>
+			<span class="absolute inset-0 grid place-items-center pointer-events-none">{square.x}-{square.y}</span>
 		</div>
 	{/each}
 </div>
-
-<style lang="scss">
-	@use '$styles/abstracts/variables.module' as *;
-
-	.wrapper {
-		display: flex;
-		flex-flow: row wrap;
-		width: 100%;
-		height: 100%;
-		background-image: url('/assets/board.webp');
-		background-size: cover;
-	}
-	.targettable{
-		background-color: rgba(200,200,0,.2);
-	}
-	.square {
-		width: calc(100% / $gameSquaresX);
-		aspect-ratio: 1;
-		border: 1px solid $baseColor;
-		box-sizing: border-box;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		position: relative;
-
-
-		span {
-			position: absolute;
-			inset: 0;
-			display: grid;
-			place-items: center;
-			pointer-events: none;
-		}
-	}
-</style>

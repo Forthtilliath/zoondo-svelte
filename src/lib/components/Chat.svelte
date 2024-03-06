@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { subscribeSocket } from '$lib/methods/subscribeSocket';
+	import { cn } from '$lib/methods/cn';
+import { subscribeSocket } from '$lib/methods/subscribeSocket';
 	import { afterUpdate } from 'svelte';
 
 	export let room = 'waiting';
@@ -25,9 +26,9 @@
 </script>
 
 <div class="wrapper">
-	<ul bind:this={ul}>
+	<ul bind:this={ul} class="flex flex-nowrap flex-col text-black overflow-y-scroll height-[calc(45vh-1rem)]">
 		{#each $messages as msg}
-			<li class={msg.author_id === userId ? 'me' : 'him'}>{msg.content}</li>
+			<li class={cn("w-3/5 bg-sky-300 m-2 p-2 rounded", msg.author_id===userId && "self-end bg-indigo-300")}>{msg.content}</li>
 		{/each}
 	</ul>
 	<form on:submit|preventDefault={hClickSend}>
@@ -38,25 +39,3 @@
 		<button>Send a message!</button>
 	</form>
 </div>
-
-<style lang="scss">
-	ul {
-		display: flex;
-		flex-flow: column nowrap;
-		color: black;
-		height: calc(45vh - 1rem);
-		overflow-y: scroll;
-	}
-	li {
-		width: 60%;
-		background-color: rgba(144, 238, 144, 0.445);
-		margin: 0.5rem;
-		padding: 0.5rem;
-		border-radius: 5px;
-
-		&.me {
-			align-self: end;
-			background-color: rgba(173, 216, 230, 0.452);
-		}
-	}
-</style>
