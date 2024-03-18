@@ -38,7 +38,9 @@
   function hDragDrop(evt: DragEvent & { currentTarget: HTMLElement }) {
     if (!evt.dataTransfer) return;
 
-    if (!evt.currentTarget.dataset.targettable) {
+    const targettable = evt.currentTarget.dataset.targettable === 'true';
+
+    if (!targettable) {
       return;
     }
 
