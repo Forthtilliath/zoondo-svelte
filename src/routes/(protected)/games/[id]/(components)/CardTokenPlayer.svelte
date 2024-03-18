@@ -21,6 +21,3 @@
   on:mouseenter={setCurrentFocus}
   on:dragstart={hDragStart}
 />
-
-<style lang="scss">
-</style>
