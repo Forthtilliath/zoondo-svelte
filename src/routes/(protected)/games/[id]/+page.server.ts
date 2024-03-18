@@ -7,7 +7,10 @@ export const load = async ({ params, parent, locals }) => {
   const rawData = await db.games.getExtended(params.id);
   if (!rawData) return fail(404);
 
-  const board: Game.Square[] = generateBoard(rawData);
+  let board: Game.Square[] = generateBoard(rawData);
+  if (locals.user.userId === rawData.player1_id) {
+    board = board.reverse();
+  }
   // TODO obfuscation selon le user
 
   return {

@@ -17,11 +17,11 @@
     if ($currentFocus?.card) {
       const { x, y } = $currentFocus;
       const token = $currentFocus.card;
-      // if(!isFirstPlayer) {
-      dropTargets = token.moves.flat().map((move) => [move[0] + x, move[1] + y]);
-      // } else {
-      // 	dropTargets =token.moves.flat().map(move=>[-move[0]+x, -move[1]+y])
-      // }
+      if (!isFirstPlayer) {
+        dropTargets = token.moves.flat().map((move) => [move[0] + x, move[1] + y]);
+      } else {
+        dropTargets = token.moves.flat().map((move) => [move[0] + x, -move[1] + y]);
+      }
     }
   }
 
