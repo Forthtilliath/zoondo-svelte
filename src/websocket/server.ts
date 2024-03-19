@@ -14,6 +14,10 @@ export default {
       socket.emit('serverNotice', 'Hello World !');
 
       socket.on('joinRoom', async (room) => {
+        let board: Game.Square[] = [];
+        const gameData = await db.games.getExtended(room);
+        if (gameData) board = generateBoard(gameData);
+
         socket.join(room);
 
         socket.emit('lastMessages', await db.messages.getByRoom(room));
@@ -31,6 +35,24 @@ export default {
 
         socket.on('pushAction', async (action) => {
           //TODO Validation de l'action
+          const attacker = await db.cardInstances.get(action.cardinstance_id);
+          if (!attacker) return;
+          const attackerCard = await db.cards.get(attacker.card_id);
+          console.log(`${attackerCard.name} is moving !`);
+          const game = await db.games.getExtended(action.game_id);
+
+          let dropTargets;
+          const isFirstPlayer = action.player_id === game?.player1_id;
+          if (!isFirstPlayer) {
+            dropTargets = attackerCard.moves.flat().map((move) => [move[0] + x, move[1] + y]);
+          } else {
+            dropTargets = attackerCard.moves.flat().map((move) => [move[0] + x, -move[1] + y]);
+          }
+
+          const attackerMoves = attackerCard.moves;
+
+          //TODO Trigger combat + resolution
+
           const act: DB.ActionCreate = { ...action, action_id: crypto.randomUUID() };
           const newAct = await db.actions.create(act).catch((err) => {
             console.error(err);

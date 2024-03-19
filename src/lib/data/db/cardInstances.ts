@@ -8,3 +8,9 @@ export function create(data: DB.CardInstanceCreate) {
     }
   });
 }
+
+export function get(cardinstance_id: string) {
+  return prismaClient.cardInstance.findFirst({
+    where: { cardinstance_id }
+  });
+}
