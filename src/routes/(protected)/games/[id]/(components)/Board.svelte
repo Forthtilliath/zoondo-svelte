@@ -6,6 +6,7 @@
   import { currentBoard, currentFocus } from '$lib/stores/game';
   import { onMount } from 'svelte';
   import { cn } from '$lib/methods/cn';
+  import { availableCards } from '$lib/data/mock';
 
   export let board: Game.Board;
   export let userId: string;

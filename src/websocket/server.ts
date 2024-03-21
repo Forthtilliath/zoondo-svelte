@@ -2,6 +2,7 @@ import { type ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
 import db from '../lib/data/db';
 import { generateBoard } from '../lib/game';
+import { availableCards, resolvers } from '../lib/data/mock';
 
 export default {
   name: 'webSocketServer',
@@ -15,7 +16,8 @@ export default {
 
       socket.on('joinRoom', async (room) => {
         let board: Game.Square[] = [];
-        const gameData = await db.games.getExtended(room);
+        const [,gameId] = room.split("#")
+        const gameData = await db.games.getExtended(gameId);
         if (gameData) board = generateBoard(gameData);
 
         socket.join(room);
@@ -37,21 +39,41 @@ export default {
           //TODO Validation de l'action
           const attacker = await db.cardInstances.get(action.cardinstance_id);
           if (!attacker) return;
-          const attackerCard = await db.cards.get(attacker.card_id);
-          console.log(`${attackerCard.name} is moving !`);
-          const game = await db.games.getExtended(action.game_id);
+          const attackerCard = availableCards[attacker.card_id]
+         
+          console.log(`${attackerCard.name} is moving to ${action.destination}`);
 
-          let dropTargets;
-          const isFirstPlayer = action.player_id === game?.player1_id;
-          if (!isFirstPlayer) {
-            dropTargets = attackerCard.moves.flat().map((move) => [move[0] + x, move[1] + y]);
-          } else {
-            dropTargets = attackerCard.moves.flat().map((move) => [move[0] + x, -move[1] + y]);
+          const [x, y] = action.destination.split(";").map(txt=>Number(txt))
+          const defenderCard = board.find( (sq)=> sq.x===x && sq.y===y)?.card
+          if(defenderCard)
+            console.log(`${defenderCard.name} is ready to receive him!`);
+          else{
+            console.log(`No problem, since this square is ${defenderCard}`);
           }
 
-          const attackerMoves = attackerCard.moves;
-
           //TODO Trigger combat + resolution
+          if(defenderCard) {
+            const attackerValue = attackerCard.corners[Math.floor(Math.random()*4)]
+            const defenderValue = defenderCard.corners[Math.floor(Math.random()*4)]
+
+            //console.log(attackerCard);
+            if(attackerValue==="*") {
+              resolvers[attackerCard.slug]()
+              //attackerCard.resolver?.()
+              console.log("attacker resolved *");              
+            }
+            else if(defenderValue==="*") {
+              resolvers[defenderCard.slug]()
+              //defenderCard.resolver?.()
+              console.log("defender resolved *");              
+            }
+            else {
+              if(attackerValue>defenderValue) console.log("The attacker wins !");
+              else console.log("The defender wins !");
+            }
+          }
+
+
 
           const act: DB.ActionCreate = { ...action, action_id: crypto.randomUUID() };
           const newAct = await db.actions.create(act).catch((err) => {
