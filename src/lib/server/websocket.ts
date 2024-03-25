@@ -1,8 +1,8 @@
 import { type ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
-import db from '../lib/data/db';
-import { generateBoard } from '../lib/game';
-import { availableCards, resolvers } from '../lib/data/mock';
+import db from '../data/db';
+import { generateBoard } from '../game';
+import { availableCards } from '../data/mock';
 
 export default {
   name: 'webSocketServer',
@@ -56,15 +56,14 @@ export default {
             const attackerValue = attackerCard.corners[Math.floor(Math.random()*4)]
             const defenderValue = defenderCard.corners[Math.floor(Math.random()*4)]
 
-            //console.log(attackerCard);
             if(attackerValue==="*") {
-              resolvers[attackerCard.slug]()
-              //attackerCard.resolver?.()
+              const resolver = await db.cards.getResolver(attackerCard.slug);
+              resolver()
               console.log("attacker resolved *");              
             }
             else if(defenderValue==="*") {
-              resolvers[defenderCard.slug]()
-              //defenderCard.resolver?.()
+              const resolver = await db.cards.getResolver(defenderCard.slug);
+              resolver()
               console.log("defender resolved *");              
             }
             else {
@@ -72,8 +71,6 @@ export default {
               else console.log("The defender wins !");
             }
           }
-
-
 
           const act: DB.ActionCreate = { ...action, action_id: crypto.randomUUID() };
           const newAct = await db.actions.create(act).catch((err) => {

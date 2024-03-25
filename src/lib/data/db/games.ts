@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { prismaClient } from '../../server/prisma';
+import { dbClient } from '../../server/prisma';
 
 export function create(p1: string, p2: string) {
-  return prismaClient.game.create({
+  return dbClient.game.create({
     data: {
       game_id: crypto.randomUUID(), // SQLite
       player1: { connect: { id: p1 } },
@@ -14,7 +14,7 @@ export function create(p1: string, p2: string) {
 }
 
 export function getExtended(game_id: string) {
-  return prismaClient.game.findFirst({
+  return dbClient.game.findFirst({
     where: { game_id },
     include: {
       actions: true,
@@ -24,7 +24,7 @@ export function getExtended(game_id: string) {
 }
 
 export function getExtendedBy(criteria: Prisma.GameWhereInput) {
-  return prismaClient.game.findMany({
+  return dbClient.game.findMany({
     where: criteria,
     include: {
       actions: true,

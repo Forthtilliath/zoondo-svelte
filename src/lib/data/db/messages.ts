@@ -1,8 +1,8 @@
-import { prismaClient } from '../../server/prisma';
+import { dbClient } from '../../server/prisma';
 
 export function create(data: DB.MessageCreate) {
-  return prismaClient.message.create({ data });
+  return dbClient.message.create({ data });
 }
 export function getByRoom(room: string) {
-  return prismaClient.message.findMany({ where: { room } });
+  return dbClient.message.findMany({ where: { room } });
 }

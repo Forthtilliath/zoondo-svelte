@@ -135,28 +135,6 @@ export const availableCards: Record<string, Game.Card> = {
   }
 };
 
-export const resolvers: Record<string, ()=>number> = {
-  cloboulon: () => {
-    console.log('ARBIIIIIIIIITRE !!!!!!!');
-    console.log('Cloboulon says: Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.');
-    return 0;
-  },
-  'gold-hure':() => {
-    console.log('ARBIIIIIIIIITRE !!!!!!!');
-    console.log('Gold-Hure says: Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.');
-
-    return 0;
-  },
-  bouclefeuille: () => {
-    console.log('ARBIIIIIIIIITRE !!!!!!!');
-    console.log(
-      'Bouclefeuille says: Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.'
-    );
-
-    return 0;
-  }
-}
-
 export const cardsOnBoard = [
   { card: availableCards['gold-hure'], x: 1, y: 1, owner: 1 },
   { card: availableCards['bouclefeuille'], x: 2, y: 1, owner: 1 },

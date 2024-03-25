@@ -1,7 +1,7 @@
-import { prismaClient } from '../../server/prisma';
+import { dbClient } from '../../server/prisma';
 
 export function create(action: DB.ActionCreate) {
-  return prismaClient.action.create({
+  return dbClient.action.create({
     data: {
       action_id: crypto.randomUUID(), // SQLite
       game_id: action.game_id,

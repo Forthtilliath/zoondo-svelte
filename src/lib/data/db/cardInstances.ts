@@ -1,7 +1,7 @@
-import { prismaClient } from '../../server/prisma';
+import { dbClient } from '../../server/prisma';
 
 export function create(data: DB.CardInstanceCreate) {
-  return prismaClient.cardInstance.create({
+  return dbClient.cardInstance.create({
     data: {
       ...data,
       cardinstance_id: crypto.randomUUID() // SQLite
@@ -10,7 +10,7 @@ export function create(data: DB.CardInstanceCreate) {
 }
 
 export function get(cardinstance_id: string) {
-  return prismaClient.cardInstance.findFirst({
+  return dbClient.cardInstance.findFirst({
     where: { cardinstance_id }
   });
 }
