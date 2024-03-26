@@ -1,6 +1,6 @@
 import db from '../../../lib/data/db';
 
-type BroadcastMsg = SocketEventsWithIo<ClientToServerEvents, 'message', { room: string }>;
+type BroadcastMsg = SocketEventsWithIoAndRoom<ClientToServerEvents, 'message'>;
 
 export const broadcastMsg: BroadcastMsg =
   ({ io, room }) =>

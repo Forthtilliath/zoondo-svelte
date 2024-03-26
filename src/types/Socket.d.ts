@@ -15,7 +15,7 @@ declare global {
   }
 
   interface ClientToServerEvents {
-    joinRoom: (room: string) => void;
+    joinRoom: (room: Room) => void;
     message: (content: string, author_id: string) => void;
     pushAction: (action: DB.Action) => void;
   }
@@ -41,7 +41,9 @@ declare global {
     T extends ClientToServerEvents | ServerToClientEvents,
     K extends keyof T,
     Props extends object = object
-  > = (props: { io: SocketSide<T>; room: string } & Props) => T[K];
+  > = (props: { io: SocketSide<T>; room: Room } & Props) => T[K];
+
+  type Room = `game#${string}` | 'waiting';
 }
 
 export {};

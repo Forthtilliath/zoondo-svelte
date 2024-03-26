@@ -9,7 +9,7 @@ export class SocketSubscriber {
   private _socket: Socket<ServerToClientEvents, ClientToServerEvents>;
   private _messages: Writable<Array<DB.Message>>;
 
-  private constructor(room: string) {
+  private constructor(room: Room) {
     this._messages = writable<Array<DB.Message>>([]);
     this._socket = io();
     this._socket.emit('joinRoom', room);
@@ -31,7 +31,7 @@ export class SocketSubscriber {
     return this._messages;
   }
 
-  public static getInstance(room = 'waiting') {
+  public static getInstance(room: Room = 'waiting') {
     if (!SocketSubscriber.instance?.[room]) {
       SocketSubscriber.instance[room] = new SocketSubscriber(room);
     }

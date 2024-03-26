@@ -4,7 +4,7 @@ import { generateBoard } from '../../../lib/game';
 type PlayAction = SocketEventsWithIo<
   ClientToServerEvents,
   'pushAction',
-  { board: Game.Square[]; room: string }
+  { board: Game.Square[]; room: Room }
 >;
 
 export const playAction: PlayAction =
