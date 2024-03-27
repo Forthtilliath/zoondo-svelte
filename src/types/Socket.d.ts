@@ -43,7 +43,9 @@ declare global {
     Props extends object = object
   > = (props: { io: SocketSide<T>; room: Room } & Props) => T[K];
 
-  type Room = `game#${string}` | 'waiting';
+  type RoomGame = `game#${string}`;
+  type RoomWaiting = 'waiting';
+  type Room = RoomGame | RoomWaiting;
 }
 
 export {};
