@@ -1,8 +1,8 @@
 import { writable, type Writable } from 'svelte/store';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
-import { currentBoard } from '$lib/stores/game';
-import { addToast } from '$lib/stores/toast';
+import { currentBoard } from '../../lib/stores/game';
+import { addToast } from '../../lib/stores/toast';
 
 export class SocketSubscriber {
   private static instance: Record<string, SocketSubscriber> = {};
