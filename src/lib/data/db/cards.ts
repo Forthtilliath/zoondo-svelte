@@ -1,7 +1,7 @@
 import { createPromise } from '../../../lib/methods';
 import { availableCards } from '../mock';
 
-export function get(card_id: string) {
+export function get(card_id: keyof typeof availableCards) {
   return createPromise(availableCards[card_id]);
 }
 

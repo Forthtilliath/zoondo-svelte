@@ -1,6 +1,7 @@
 export * from './array';
 export * from './cn';
 export * from './createPromise';
+export * from './dice';
 export * from './generateBoard';
 export * from './generatePositions';
 export * from './isType';

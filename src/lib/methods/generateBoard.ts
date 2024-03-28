@@ -1,7 +1,7 @@
 import { availableCards } from '../data/mock';
 import { generatePositions } from './';
 
-export function generateBoard(rawData: DB.GameExtended) {
+export function generateBoard<T extends DB.GameExtendedByKeys<['actions', 'cards']>>(rawData: T) {
   const { cards, actions } = rawData;
   const positions = generatePositions(0, 5);
   const board: Game.Square[] = [];

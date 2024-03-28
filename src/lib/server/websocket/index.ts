@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { broadcastMsg } from './broadcastMsg';
 import { playAction } from './playAction';
 import db from '../../../lib/data/db';
-import { isRoomGame, generateBoard } from '../../../lib/methods';
+import { isRoomGame, generateBoard, arrayOfKeysToObject } from '../../../lib/methods';
 
 export default {
   name: 'webSocketServer',
@@ -32,7 +32,8 @@ export default {
 async function getBoard(room: RoomGame) {
   let board: Game.Square[] = [];
   const [, gameId] = room.split('#');
-  const gameData = await db.games.get(gameId, ['actions', 'cards', 'player1', 'player2']);
+  const keys = arrayOfKeysToObject(['actions', 'cards', 'player1', 'player2'], true);
+  const gameData = await db.games.get(gameId, keys);
   // console.log(gameData); //! L'id du joueur 2 semble être celui du socket io !
   if (gameData) board = generateBoard(gameData);
 

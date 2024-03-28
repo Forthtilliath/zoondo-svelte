@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client';
 import { dbClient } from '../../server/prisma';
-import { arrayOfKeysToObject } from '../../../lib/methods';
 
 export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
   return dbClient.game.create({
@@ -15,32 +14,28 @@ export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
 }
 
 /**
- * Retrieve a game from the database based on the provided game_id and included keys.
+ * Retrieves a game from the database with the specified game ID and includes the specified data.
  *
  * @param {DB.Game['game_id']} game_id - The ID of the game to retrieve.
- * @param {T[]} arr_include - An array of keys to include in the retrieved game data.
- * @return The Promise containing the retrieved game data.
+ * @param {T} include - The data to include in the retrieved game.
+ * @return  A promise that resolves to the retrieved game with the included data.
  */
-export function get<T extends DB.GameIncludeKeys>(
-  game_id: DB.Game['game_id'],
-  arr_include: T[] = []
-) {
-  const include = arrayOfKeysToObject(arr_include, true);
+export function get<T extends DB.GameInclude>(game_id: DB.Game['game_id'], include: T) {
   return dbClient.game.findUnique({
     where: { game_id },
     include
   });
 }
 
-export function getExtended(game_id: string) {
-  return dbClient.game.findFirst({
-    where: { game_id },
-    include: {
-      actions: true,
-      cards: true
-    }
-  });
-}
+// export function getExtended(game_id: string) {
+//   return dbClient.game.findFirst({
+//     where: { game_id },
+//     include: {
+//       actions: true,
+//       cards: true
+//     }
+//   });
+// }
 
 export function getExtendedBy(criteria: Prisma.GameWhereInput) {
   return dbClient.game.findMany({

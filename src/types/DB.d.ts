@@ -18,17 +18,16 @@ declare global {
 
     type CardInstanceCreate = Prisma.CardInstanceUncheckedCreateInput;
 
-    type GameExtended = Prisma.GameGetPayload<{
-      include: {
-        actions: true;
-        cards: true;
-        player1: true;
-        player2: true;
-      };
-    }>;
+    type GameExtendedByKeys<T extends GameIncludeKeys[]> = Prisma.GameGetPayload<{
+      include: ArrayToObject<T, true>;
+    }>
+    type GameExtended<T extends GameInclude> = Prisma.GameGetPayload<{
+      include: T;
+    }>
 
     type IncludeKeys<T> = keyof Omit<T, '_count'>;
-    type GameIncludeKeys = IncludeKeys<Prisma.GameInclude>;
+    // type GameIncludeKeys = IncludeKeys<Prisma.GameInclude>;
+    type GameIncludeKeys = keyof Prisma.GameInclude;
     type CardInstanceIncludeKeys = IncludeKeys<Prisma.CardInstanceInclude>;
 
     // Types tests, je laisse pour l'instant voir si j'ai besoin ou pas !
@@ -39,7 +38,7 @@ declare global {
     // type KeysGameInclude = IncludeKeys<Prisma.GameInclude>[];
     // type GameInclude = Prisma.Subset<Prisma.GameInclude, KeysGameInclude>;
 
-    // type GameInclude = Prisma.GameInclude;
+    type GameInclude = Prisma.GameInclude;
     // type GameIncludeObject = Partial<Record<DB.GameIncludeKeys, boolean>>;
 
     // type A<T extends Prisma.GameFindFirstArgs<Prisma.ExtArgs>> = Prisma.Prisma__GameClient<
