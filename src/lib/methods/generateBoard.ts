@@ -27,8 +27,8 @@ export function generateBoard<T extends DB.GameExtendedByKeys<['actions', 'cards
         owner: null
       };
     else {
-      const cardData = availableCards[card.card_id];
-      delete cardData.resolver;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { resolver, ...cardData } = availableCards[card.card_id];
 
       squareContent = {
         card: cardData,
