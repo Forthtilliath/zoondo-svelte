@@ -1,5 +1,5 @@
 import db from '../../../lib/data/db';
-import { generateBoard } from '../../../lib/game';
+import { generateBoard } from '../../../lib/methods';
 
 type PlayAction = SocketEventsWithIo<
   ClientToServerEvents,

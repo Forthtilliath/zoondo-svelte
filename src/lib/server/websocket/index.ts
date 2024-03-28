@@ -3,8 +3,7 @@ import { Server } from 'socket.io';
 import { broadcastMsg } from './broadcastMsg';
 import { playAction } from './playAction';
 import db from '../../../lib/data/db';
-import { generateBoard } from '../../../lib/game';
-import { isRoomGame } from '../../../lib/methods/isType';
+import { isRoomGame, generateBoard } from '../../../lib/methods';
 
 export default {
   name: 'webSocketServer',

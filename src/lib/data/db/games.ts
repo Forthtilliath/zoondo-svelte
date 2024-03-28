@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { dbClient } from '../../server/prisma';
-import { arrayOfKeysToObject } from '../../../lib/methods/array';
+import { arrayOfKeysToObject } from '../../../lib/methods';
 
 export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
   return dbClient.game.create({
@@ -13,7 +13,6 @@ export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
     }
   });
 }
-
 
 /**
  * Retrieve a game from the database based on the provided game_id and included keys.

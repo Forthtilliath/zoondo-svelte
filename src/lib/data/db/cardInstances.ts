@@ -1,5 +1,5 @@
 import { dbClient } from '../../server/prisma';
-import { arrayOfKeysToObject } from '../../../lib/methods/array';
+import { arrayOfKeysToObject } from '../../../lib/methods';
 
 export function create(data: DB.CardInstanceCreate) {
   return dbClient.cardInstance.create({
