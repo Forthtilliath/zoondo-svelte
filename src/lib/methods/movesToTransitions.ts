@@ -28,7 +28,7 @@ export function movesToTransitions(
   return transitions;
 }
 
-export function positionsToTransition(
+function positionsToTransition(
   src: Game.Position,
   dst: Game.Position,
   nbSquares: number
