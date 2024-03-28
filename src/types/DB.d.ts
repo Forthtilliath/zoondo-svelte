@@ -5,6 +5,8 @@ import { Prisma } from '@prisma/client';
 declare global {
   namespace DB {
     type User = Prisma.UserGetPayload<object>;
+    type UserCreate = Prisma.UserCreateInput;
+
     type Game = Prisma.GameGetPayload<object>;
     type Action = Prisma.ActionGetPayload<object>;
 
