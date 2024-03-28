@@ -39,6 +39,7 @@ declare global {
     // type GameInclude = Prisma.Subset<Prisma.GameInclude, KeysGameInclude>;
 
     type GameInclude = Prisma.GameInclude;
+    type CardInstanceInclude = Prisma.CardInstanceInclude;
     // type GameIncludeObject = Partial<Record<DB.GameIncludeKeys, boolean>>;
 
     // type A<T extends Prisma.GameFindFirstArgs<Prisma.ExtArgs>> = Prisma.Prisma__GameClient<

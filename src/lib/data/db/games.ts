@@ -20,7 +20,7 @@ export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
  * @param {T} include - The data to include in the retrieved game.
  * @return  A promise that resolves to the retrieved game with the included data.
  */
-export function get<T extends DB.GameInclude>(game_id: DB.Game['game_id'], include: T) {
+export function get<T extends DB.GameInclude>(game_id: DB.Game['game_id'], include: T = {} as T) {
   return dbClient.game.findUnique({
     where: { game_id },
     include
