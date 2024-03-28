@@ -9,5 +9,3 @@ class DBClient {
   }
 }
 export const dbClient = DBClient.getInstance();
-
-await dbClient.$disconnect();
