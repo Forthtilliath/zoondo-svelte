@@ -1,4 +1,4 @@
-import { availableCards } from './data/mock';
+import { availableCards } from '../data/mock';
 
 export function generatePositions(min: number, max: number): Game.Position[] {
   const positions: Array<Game.Position> = [];

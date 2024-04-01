@@ -1,5 +1,5 @@
 import db from '$lib/data/db';
-import { generateBoard } from '$lib/game.js';
+import { generateBoard } from '../../../../lib/methods/game';
 import { fail } from '@sveltejs/kit';
 
 export const load = async ({ params, parent, locals }) => {

@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 declare global {
   namespace DB {
     type User = Prisma.UserGetPayload<object>;
+    type UserCreate = Prisma.UserCreateInput;
     type Game = Prisma.GameGetPayload<object>;
     type Action = Prisma.ActionGetPayload<object>;
 
@@ -22,6 +23,11 @@ declare global {
         player2: true;
       };
     }>;
+
+    type IncludeKeys<T> = keyof Omit<T, '_count'>;
+    type GameIncludeKeys = IncludeKeys<Prisma.GameInclude>;
+    type CardInstanceIncludeKeys = IncludeKeys<Prisma.CardInstanceInclude>;
+
   }
 }
 export {};

@@ -2,35 +2,29 @@ import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
 const prisma = new PrismaClient();
 
+const users = [
+  {
+    email: 'evoli@spamland.com',
+    username: 'Evoli'
+  },
+  {
+    email: 'aquali@spamland.com',
+    username: 'Aquali'
+  },
+  {
+    email: 'pyroli@spamland.com',
+    username: 'Pyroli'
+  }
+];
+
 async function main() {
   // TODO Fill this ?
-  await prisma.user.upsert({
-    where: { email: 'evoli@spamland.com' },
-    update: {},
-    create: {
+  for (const user of users) {
+    await createIfNotExists({
       id: crypto.randomUUID(), //SQLite
-      email: 'evoli@spamland.com',
-      username: 'Evoli'
-    }
-  });
-  await prisma.user.upsert({
-    where: { email: 'aquali@spamland.com' },
-    update: {},
-    create: {
-      id: crypto.randomUUID(), //SQLite
-      email: 'aquali@spamland.com',
-      username: 'Aquali'
-    }
-  });
-  await prisma.user.upsert({
-    where: { email: 'pyroli@spamland.com' },
-    update: {},
-    create: {
-      id: crypto.randomUUID(), //SQLite
-      email: 'pyroli@spamland.com',
-      username: 'Pyroli'
-    }
-  });
+      ...user
+    });
+  }
 }
 
 main()
@@ -42,3 +36,11 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+
+function createIfNotExists(data: DB.UserCreate) {
+  return prisma.user.upsert({
+    where: { username: data.email },
+    create: data,
+    update: data
+  });
+}
