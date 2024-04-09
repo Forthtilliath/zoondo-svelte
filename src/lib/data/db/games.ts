@@ -1,9 +1,8 @@
 import { Prisma } from '@prisma/client';
 import { dbClient } from '../../server/prisma';
-import { arrayOfKeysToObject } from '../../../lib/methods/array';
 
 export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
-    return dbClient.game.create({
+  return dbClient.game.create({
     data: {
       game_id: crypto.randomUUID(), // SQLite
       player1: { connect: { id: p1 } },
@@ -14,11 +13,7 @@ export function create(p1: DB.Game['player1_id'], p2: DB.Game['player2_id']) {
   });
 }
 
-export function get<T extends DB.GameIncludeKeys>(
-  game_id: DB.Game['game_id'],
-  arr_include: T[] = []
-) {
-  const include = arrayOfKeysToObject(arr_include, true);
+export function get<T extends DB.GameInclude>(game_id: DB.Game['game_id'], include: T) {
   return dbClient.game.findUnique({
     where: { game_id },
     include
