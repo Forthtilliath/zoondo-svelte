@@ -8,6 +8,7 @@ export const load = async ({ parent, locals }) => {
   const currentGamesPromise = db.games.getExtendedBy({
     OR: [{ player1_id: userId }, { player2_id: userId }]
   });
+
   const usersPromise = db.users.getAll();
 
   return {

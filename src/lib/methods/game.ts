@@ -80,8 +80,7 @@ export function generateBoard<T extends DB.GameExtendedByKeys<['actions', 'cards
         owner: null
       };
     else {
-      const cardData = availableCards[card.card_id];
-      delete cardData.resolver;
+      const { resolver, ...cardData } = availableCards[card.card_id];
 
       squareContent = {
         card: cardData,

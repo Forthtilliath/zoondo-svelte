@@ -26,6 +26,7 @@ declare global {
 
     type CardInstanceCreate = Prisma.CardInstanceUncheckedCreateInput;
     type CardInstanceIncludeKeys = keyof Prisma.CardInstanceInclude;
+    type CardInstanceInclude = Prisma.CardInstanceInclude;
   }
 }
 export {};

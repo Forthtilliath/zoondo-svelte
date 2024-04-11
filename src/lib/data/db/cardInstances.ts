@@ -1,5 +1,4 @@
 import { dbClient } from '../../server/prisma';
-import { arrayOfKeysToObject } from '../../../lib/methods/array';
 import * as cards from './cards';
 
 export function create(data: DB.CardInstanceCreate) {
@@ -11,11 +10,10 @@ export function create(data: DB.CardInstanceCreate) {
   });
 }
 
-export function get<T extends DB.CardInstanceIncludeKeys>(
+export function get<T extends DB.CardInstanceInclude>(
   cardinstance_id: DB.CardInstanceCreate['cardinstance_id'],
-  arr_include: T[] = []
+  include: T = {} as T
 ) {
-  const include = arrayOfKeysToObject(arr_include, true);
   return dbClient.cardInstance.findUnique({
     where: { cardinstance_id },
     include
