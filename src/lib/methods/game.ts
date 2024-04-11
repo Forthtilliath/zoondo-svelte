@@ -12,7 +12,7 @@ export function generatePositions(min: number, max: number): Game.Position[] {
   return positions;
 }
 
-export function positionsToTransition(
+function positionsToTransition(
   src: Game.Position,
   dst: Game.Position,
   nbSquares: number
